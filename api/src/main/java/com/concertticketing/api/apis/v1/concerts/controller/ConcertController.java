@@ -9,13 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.io.Console;
 
 @RestController
-@RequestMapping("/v1/concerts")
+@RequestMapping("/api/v1/concerts")
 public class ConcertController {
     @GetMapping
     public ResponseEntity<ConcertListResDto> getConcerts(@ModelAttribute ConcertListQueryReqDto reqDto) {
-        System.out.println(reqDto.toString());
-        System.out.println(reqDto.getSortBy());
-        System.out.println(reqDto.getPage());
         return ResponseEntity.ok(ConcertListResDto.fromEntity());
     }
 

@@ -20,7 +20,7 @@ public class ConcertControllerTest {
     @Test
     void getConcerts_ok() throws Exception {
         // save 데이터로 비교
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/concerts?page=1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/concerts?page=1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.concerts").isArray());
@@ -29,7 +29,7 @@ public class ConcertControllerTest {
     @Test
     void getConcert_ok() throws Exception {
         // save 데이터로 비교
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/concerts/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/concerts/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.id").value(1));
@@ -37,7 +37,7 @@ public class ConcertControllerTest {
 
     @Test
     void getConcert_bad_request() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/concerts/a"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/concerts/a"))
                 .andExpect(status().isBadRequest());
     }
 }
