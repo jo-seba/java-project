@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: api
+
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: ${DB_DRIVER_CLASS_NAME}
+    username: ${DB_USERNAME}
+
+  jpa:
+    show-sql: ${DB_SHOW_SQL}
+    hibernate:
+      ddl-auto: none
