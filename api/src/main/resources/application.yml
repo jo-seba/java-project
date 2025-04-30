@@ -4,8 +4,9 @@ spring:
 
   datasource:
     url: ${DB_URL}
-    driver-class-name: ${DB_DRIVER_CLASS_NAME}
     username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     show-sql: ${DB_SHOW_SQL}
