@@ -9,6 +9,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
-    show-sql: ${DB_SHOW_SQL}
+    show-sql: ${DB_SHOW_SQL:false}
     hibernate:
       ddl-auto: none

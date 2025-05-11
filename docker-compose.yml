@@ -1,12 +1,12 @@
 version: "3.7"
 services:
-  app:
+  api:
     build:
       context: .
       dockerfile: api/Dockerfile
-    container_name: concert-ticketing-container
+    container_name: concert-ticketing-api
     environment:
-      DB_URL: jdbc:mysql://db:3306/test_db
+      DB_URL: jdbc:mysql://mysqldb:3306/test_db?characterEncoding=UTF-8
       DB_USERNAME: test_user
       DB_PASSWORD: test_password
     ports:
@@ -17,6 +17,9 @@ services:
     networks:
       - concert-ticketing-network
   mysqldb:
+    build:
+      context: .
+      dockerfile: database/Dockerfile
     image: mysql:8.0
     container_name: concert-ticketing-mysql
     environment:
@@ -33,6 +36,8 @@ services:
       retries: 10
       interval: 3s
       timeout: 30s
-
+    volumes:
+      - ./database/sql:/docker-entrypoint-initdb.d
+      - ./database/my.cnf:/etc/mysql/my.cnf
 networks:
   concert-ticketing-network:
