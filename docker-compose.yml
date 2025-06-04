@@ -1,9 +1,9 @@
 version: "3.7"
 services:
-  api:
+  user-api:
     build:
       context: .
-      dockerfile: api/Dockerfile
+      dockerfile: user-api/Dockerfile
     container_name: concert-ticketing-api
     environment:
       DB_URL: jdbc:mysql://mysqldb:3306/test_db?characterEncoding=UTF-8
