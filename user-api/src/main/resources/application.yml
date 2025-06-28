@@ -1,11 +1,11 @@
 spring:
   application:
-    name: api
+    name: user-api
+
+  profiles:
+    active: dev
 
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -16,13 +16,8 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
-
-logging.level:
-  org.hibernate.SQL: debug
-  org.hibernate.orm.jdbc.bind: trace
+        dialect: org.hibernate.dialect.MySQL8Dialect
 
 springdoc:
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
-  cache:
-    disabled: true
