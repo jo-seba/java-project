@@ -1,7 +1,10 @@
 #!/bin/bash
 
 # 변수 설정
-DOCKERFILE_PATH=database/Dockerfile
+APP_ROOT_DIR="$(dirname "$0")"
+DATABASE_DIR="${APP_ROOT_DIR}/database"
+DOCKERFILE_PATH="${DATABASE_DIR}/Dockerfile"
+
 IMAGE_NAME=concert-ticketing-database
 CONTAINER_NAME=concert-ticketing-database-container
 
@@ -16,7 +19,7 @@ fi
 
 # 빌드
 echo "Building MySQL image.."
-docker build -f $DOCKERFILE_PATH -t $IMAGE_NAME .
+docker build -f $DOCKERFILE_PATH -t $IMAGE_NAME $DATABASE_DIR
 
 # 실행
 echo "Running MySQL container"
