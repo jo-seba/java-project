@@ -1,4 +1,4 @@
-package com.concertticketing.userapi.apis.venues.domain;
+package com.concertticketing.sellerapi.apis.venues.domain;
 
 import java.math.BigDecimal;
 
@@ -8,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -16,7 +15,6 @@ import lombok.ToString;
 @Entity
 @Table(name = "venue")
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class Venue {

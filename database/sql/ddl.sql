@@ -1,6 +1,6 @@
 -- user
-DROP TABLE IF EXISTS user_user;
-CREATE TABLE `user_user` (
+DROP TABLE IF EXISTS user;
+CREATE TABLE `user` (
     `id`	        bigint	    NOT NULL    auto_increment  PRIMARY KEY,
     `name`	        varchar(24)	NULL,
     `phone_number`	varchar(11)	NULL,
@@ -16,7 +16,7 @@ CREATE TABLE `user_alarm` (
     `marketing`	            boolean	        NOT NULL    DEFAULT false,
     `marketing_agreed_at`   timestamp       NULL,
     `concert`	            boolean	        NOT NULL    DEFAULT false,
-    FOREIGN KEY (id) REFERENCES user_user(id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (id) REFERENCES user(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS user_agreement;
@@ -25,7 +25,7 @@ CREATE TABLE `user_agreement` (
     `private`   	    boolean     NOT NULL    DEFAULT false,
     `marketing`     	boolean     NOT NULL    DEFAULT false,
     `last_updated_at`	timestamp   NOT NULL    DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id) REFERENCES user_user(id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (id) REFERENCES user(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -39,11 +39,12 @@ CREATE TABLE `seller_company` (
     `deleted_at`	timestamp   NULL
 );
 
-DROP TABLE IF EXISTS seller_seller;
-CREATE TABLE `seller_seller` (
+DROP TABLE IF EXISTS seller;
+CREATE TABLE `seller` (
     `id`	        int     	NOT NULL    auto_increment  PRIMARY KEY,
+    `email`         varchar(50) NOT NULL    UNIQUE,
     `company_id`	int     	NOT NULL,
-    `role`          tinyint     NOT NULL    DEFAULT 0   COMMENT "0: employee, 1: admin",
+    `role`          tinyint     NOT NULL    DEFAULT 0   COMMENT "1: MEMBER, 11: MANAGER, 21: OWNER",
     `name`	        varchar(24)	NOT NULL,
     `phone_number`	varchar(20)	NOT NULL,
     `created_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
@@ -54,8 +55,8 @@ CREATE TABLE `seller_seller` (
 
 
 -- venue
-DROP TABLE IF EXISTS venue_venue;
-CREATE TABLE `venue_venue` (
+DROP TABLE IF EXISTS venue;
+CREATE TABLE `venue` (
     `id`    	    int             NOT NULL    auto_increment  PRIMARY KEY,
     `name`	        varchar(50) 	NOT NULL,
     `capacity`  	mediumint	    NOT NULL,
@@ -77,7 +78,7 @@ CREATE TABLE `venue_layout` (
     `created_at`    timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
     `updated_at`    timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `deleted_at`	timestamp   NULL,
-    FOREIGN KEY (venue_id) REFERENCES venue_venue(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (venue_id) REFERENCES venue(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (company_id) REFERENCES seller_company(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -102,8 +103,8 @@ CREATE TABLE `venue_row` (
 
 
 -- concert
-DROP TABLE IF EXISTS concert_concert;
-CREATE TABLE `concert_concert` (
+DROP TABLE IF EXISTS concert;
+CREATE TABLE `concert` (
     `id`    	            bigint	        NOT NULL    auto_increment  PRIMARY KEY,
     `company_id`	        int	            NOT NULL,
     `venue_id`          	int	            NOT NULL,
@@ -123,7 +124,22 @@ CREATE TABLE `concert_concert` (
     `thumbnail`	            varchar(255)	NOT NULL,
     `description`	        varchar(255)	NOT NULL    DEFAULT '',
     FOREIGN KEY (company_id) REFERENCES seller_company(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (venue_id) REFERENCES venue_venue(id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (venue_id) REFERENCES venue(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS concert_category;
+CREATE TABLE `concert_category` (
+    `id`    int         NOT NULL    auto_increment PRIMARY KEY,
+    `name`  varchar(20) NOT NULL
+);
+
+DROP TABLE IF EXISTS concert_concert_category;
+CREATE TABLE `concert_concert_category` (
+    `id`            bigint  NOT NULL    auto_increment PRIMARY KEY,
+    `concert_id`    bigint  NOT NULL,
+    `category_id`   int     NOT NULL,
+    FOREIGN KEY (concert_id) REFERENCES concert(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES concert_category(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS concert_detail_image;
@@ -131,7 +147,7 @@ CREATE TABLE `concert_detail_image` (
     `id`	        bigint	        NOT NULL	auto_increment  PRIMARY KEY,
     `concert_id`	bigint	        NOT NULL,
     `image_url`	    varchar(255)	NOT NULL,
-    FOREIGN KEY (concert_id) REFERENCES concert_concert(id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (concert_id) REFERENCES concert(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -144,7 +160,8 @@ CREATE TABLE `concert_schedule` (
     `ended_at`  	timestamp	NOT NULL,
     `created_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
     `updated_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (concert_id) REFERENCES concert_concert(id) ON DELETE CASCADE ON UPDATE CASCADE
+    `deleted_at`	timestamp   NULL,
+    FOREIGN KEY (concert_id) REFERENCES concert(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS concert_seat;
@@ -158,7 +175,7 @@ CREATE TABLE `concert_seat` (
     `hold_user_id`  	bigint	    NULL,
     `hold_expired_at`	timestamp	NULL,
     FOREIGN KEY (schedule_id) REFERENCES concert_schedule(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (hold_user_id) REFERENCES user_user(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (hold_user_id) REFERENCES user(id) ON DELETE CASCADE ON UPDATE CASCADE,
     UNIQUE (schedule_id, area_id, seat_row, seat_col)
 );
 
@@ -172,8 +189,8 @@ CREATE TABLE `concert_order` (
     `price`	        decimal(9, 0)   NULL,
     `created_at`	timestamp	    NULL,
     `updated_at`    timestamp	    NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES user_user(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (concert_id) REFERENCES concert_concert(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (concert_id) REFERENCES concert(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (schedule_id) REFERENCES concert_schedule(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (seat_id) REFERENCES concert_seat(id) ON DELETE CASCADE ON UPDATE CASCADE,
     UNIQUE (user_id, schedule_id)

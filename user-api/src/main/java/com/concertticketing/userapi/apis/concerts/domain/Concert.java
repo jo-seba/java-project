@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "concert_concert")
+@Table(name = "concert")
 @Immutable
 @Getter
 @AllArgsConstructor

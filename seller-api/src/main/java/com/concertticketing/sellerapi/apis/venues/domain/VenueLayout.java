@@ -1,6 +1,4 @@
-package com.concertticketing.userapi.apis.venues.domain;
-
-import java.math.BigDecimal;
+package com.concertticketing.sellerapi.apis.venues.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,25 +6,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
-@Table(name = "venue")
+@Table(name = "venue_layout")
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
-public class Venue {
+public class VenueLayout {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    private String name;
-    private Integer capacity;
-    private String roadAddress;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    String name;
 }
