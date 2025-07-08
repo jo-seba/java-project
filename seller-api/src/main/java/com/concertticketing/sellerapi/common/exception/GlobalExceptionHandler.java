@@ -13,17 +13,17 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import com.concertticketing.sellerapi.common.exception.constant.StatusCode;
+import com.concertticketing.commonerror.exception.GlobalErrorException;
 import com.concertticketing.sellerapi.common.response.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(GlobalErrorException.class)
     protected ResponseEntity<ErrorResponse> handleGlobalErrorException(GlobalErrorException e) {
-        if (e.getBaseErrorCode().getStatusCode().getCode() >= StatusCode.INTERNAL_SERVER_ERROR.getCode()) {
+        if (e.getStatusCode() >= HttpStatus.INTERNAL_SERVER_ERROR.value()) {
             // sentry - monitoring
         }
-        return ResponseEntity.status(e.getStatusCode()).body(ErrorResponse.of(e.getStatusMessage()));
+        return ResponseEntity.status(e.getStatusCode()).body(ErrorResponse.of(e.getMessage()));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
         }
     )
     protected ErrorResponse handleBadRequestError(RuntimeException e) {
-        return ErrorResponse.of(StatusCode.BAD_REQUEST.getMessage());
+        return ErrorResponse.of("Bad Request");
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
         }
     )
     protected ErrorResponse handleBadRequestError(Exception e) {
-        return ErrorResponse.of(StatusCode.BAD_REQUEST.getMessage());
+        return ErrorResponse.of("Bad Request");
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
         }
     )
     protected ErrorResponse handleForbiddenError(RuntimeException e) {
-        return ErrorResponse.of(StatusCode.FORBIDDEN.getMessage());
+        return ErrorResponse.of("Forbidden");
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
         }
     )
     protected ErrorResponse handleNotFoundError(Exception e) {
-        return ErrorResponse.of(StatusCode.NOT_FOUND.getMessage());
+        return ErrorResponse.of("Not Found");
     }
 
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
@@ -75,14 +75,13 @@ public class GlobalExceptionHandler {
         }
     )
     protected ErrorResponse handleMethodNotAllowedError(Exception e) {
-        return ErrorResponse.of(StatusCode.METHOD_NOT_ALLOWED.getMessage());
+        return ErrorResponse.of("Method Not Allowed");
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     protected ErrorResponse handleException(Exception e) {
         e.printStackTrace();
-        return ErrorResponse.of(StatusCode.INTERNAL_SERVER_ERROR.getMessage());
+        return ErrorResponse.of("Error");
     }
 }
-

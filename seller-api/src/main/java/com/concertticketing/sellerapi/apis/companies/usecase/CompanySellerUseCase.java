@@ -5,6 +5,7 @@ import static com.concertticketing.sellerapi.common.constant.PageConstants.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import com.concertticketing.commonerror.exception.common.CommonBadRequestException;
 import com.concertticketing.sellerapi.apis.companies.dto.AddCompanySellerDto;
 import com.concertticketing.sellerapi.apis.companies.dto.CompanySellerListDto;
 import com.concertticketing.sellerapi.apis.companies.dto.CompanySellerListDto.CompanySellerListQuery;
@@ -17,8 +18,6 @@ import com.concertticketing.sellerapi.apis.sellers.service.SellerDeleteService;
 import com.concertticketing.sellerapi.apis.sellers.service.SellerSearchService;
 import com.concertticketing.sellerapi.apis.sellers.service.SellerUpdateService;
 import com.concertticketing.sellerapi.common.annotation.UseCase;
-import com.concertticketing.sellerapi.common.exception.CommonErrorCode;
-import com.concertticketing.sellerapi.common.exception.GlobalErrorException;
 import com.concertticketing.sellerapi.security.authentication.SecurityUserDetails;
 
 import lombok.RequiredArgsConstructor;
@@ -65,7 +64,7 @@ public class CompanySellerUseCase {
         boolean isOwnerRoleBody = body.role() == SellerRole.OWNER;
         // 수정할 값이 자신일 때는 role == owner 그 외에는 role != owner
         if (isSelf != isOwnerRoleBody) {
-            throw new GlobalErrorException(CommonErrorCode.BAD_REQUEST);
+            throw new CommonBadRequestException();
         }
 
         sellerUpdateService.update(
@@ -79,7 +78,7 @@ public class CompanySellerUseCase {
         Integer sellerId
     ) {
         if (userDetails.getId().equals(sellerId)) {
-            throw new GlobalErrorException(CommonErrorCode.BAD_REQUEST);
+            throw new CommonBadRequestException();
         }
         sellerDeleteService.delete(sellerId, userDetails.getCompanyId());
     }

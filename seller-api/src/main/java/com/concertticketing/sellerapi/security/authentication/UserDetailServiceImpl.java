@@ -6,11 +6,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.concertticketing.commonerror.exception.common.CommonNotFoundException;
 import com.concertticketing.sellerapi.apis.sellers.domain.Seller;
 import com.concertticketing.sellerapi.apis.sellers.mapper.SellerMapper;
 import com.concertticketing.sellerapi.apis.sellers.repository.SellerRepository;
-import com.concertticketing.sellerapi.common.exception.CommonErrorCode;
-import com.concertticketing.sellerapi.common.exception.GlobalErrorException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +24,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         Seller seller = sellerRepository.findById(Integer.parseInt(id))
-            .orElseThrow(() -> new GlobalErrorException(CommonErrorCode.NOT_FOUND));
+            .orElseThrow(CommonNotFoundException::new);
         return sellerMapper.toSecurityUserDetails(seller);
     }
 }

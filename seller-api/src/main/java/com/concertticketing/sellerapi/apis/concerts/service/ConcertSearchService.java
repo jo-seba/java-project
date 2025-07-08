@@ -5,10 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.concertticketing.commonerror.exception.common.CommonNotFoundException;
 import com.concertticketing.sellerapi.apis.concerts.domain.Concert;
 import com.concertticketing.sellerapi.apis.concerts.repository.ConcertRepository;
-import com.concertticketing.sellerapi.common.exception.CommonErrorCode;
-import com.concertticketing.sellerapi.common.exception.GlobalErrorException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +19,7 @@ public class ConcertSearchService {
 
     public Concert findWithVenueAndVenueLayoutAndCategories(Long concertId, Integer companyId) {
         return concertRepository.findConcertWithVenueAndVenueLayoutAndCategories(concertId, companyId)
-            .orElseThrow(() -> new GlobalErrorException(CommonErrorCode.NOT_FOUND));
+            .orElseThrow(CommonNotFoundException::new);
     }
 
     public Page<Concert> findAllWithVenue(Integer companyId, Pageable pageable) {
