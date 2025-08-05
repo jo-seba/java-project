@@ -1,16 +1,21 @@
 package com.concertticketing.userapi.apis.concerts.repository;
 
+import static com.concertticketing.userapi.apis.concerts.domain.QConcert.*;
+import static com.concertticketing.userapi.apis.concerts.domain.QConcertTicketingQueueConfig.*;
+import static com.concertticketing.userapi.apis.venues.domain.QVenue.*;
+
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import com.concertticketing.userapi.apis.concerts.constant.ConcertSort;
-import com.concertticketing.userapi.apis.concerts.domain.QConcert;
-import com.concertticketing.userapi.apis.concerts.dto.ConcertListDto;
-import com.concertticketing.userapi.apis.concerts.dto.QConcertListDto_ConcertListItem;
-import com.concertticketing.userapi.apis.venues.domain.QVenue;
+import com.concertticketing.userapi.apis.concerts.dbdto.ConcertListItemDBDto;
+import com.concertticketing.userapi.apis.concerts.dbdto.ConcertTicketingCacheDBDto;
+import com.concertticketing.userapi.apis.concerts.dbdto.QConcertListItemDBDto;
+import com.concertticketing.userapi.apis.concerts.dbdto.QConcertTicketingCacheDBDto;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -21,13 +26,10 @@ import lombok.RequiredArgsConstructor;
 public class ConcertRepositoryCustomImpl implements ConcertRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
-    private final QConcert concert = QConcert.concert;
-    private final QVenue venue = QVenue.venue;
-
     @Override
-    public Page<ConcertListDto.ConcertListItem> findConcerts(ConcertSort sort, Pageable pageable) {
-        List<ConcertListDto.ConcertListItem> content = queryFactory.select(
-                new QConcertListDto_ConcertListItem(
+    public Page<ConcertListItemDBDto> findConcerts(ConcertSort sort, Pageable pageable) {
+        List<ConcertListItemDBDto> content = queryFactory.select(
+                new QConcertListItemDBDto(
                     concert.id,
                     concert.title,
                     venue.name,
@@ -45,6 +47,23 @@ public class ConcertRepositoryCustomImpl implements ConcertRepositoryCustom {
         JPAQuery<Long> countQuery = queryFactory.select(concert.count()).from(concert);
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Optional<ConcertTicketingCacheDBDto> findConcertWithTicketingQueueConfig(Long concertId) {
+        return Optional.ofNullable(
+            queryFactory.select(
+                    new QConcertTicketingCacheDBDto(
+                        concert.id,
+                        concert.bookingStartedAt,
+                        concert.bookingEndedAt,
+                        concertTicketingQueueConfig.capacity
+                    )
+                ).from(concert)
+                .leftJoin(concertTicketingQueueConfig).on(concert.id.eq(concertTicketingQueueConfig.id))
+                .where(concert.id.eq(concertId))
+                .fetchOne()
+        );
     }
 
     private OrderSpecifier<?> getOrderByConcertSort(ConcertSort sort) {

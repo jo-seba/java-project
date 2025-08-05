@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.Immutable;
 
 import com.concertticketing.userapi.apis.venues.domain.Venue;
+import com.concertticketing.userapi.apis.venues.domain.VenueLayout;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,13 +30,10 @@ import lombok.ToString;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(exclude = {"venue", "detailImages"})
 public class Concert {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long VenueLayoutId;
 
     private String title;
     private Integer duration;
@@ -49,10 +47,21 @@ public class Concert {
 
     private LocalDateTime createdAt;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "venue_id")
     private Venue venue;
 
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "venue_layout_id")
+    private VenueLayout venueLayout;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "concert")
+    private List<ConcertConcertCategory> concertCategories = new ArrayList<>();
+
+    @ToString.Exclude
     @OneToMany
     @JoinColumn(name = "concert_id")
     private List<ConcertDetailImage> detailImages = new ArrayList<>();

@@ -55,8 +55,8 @@ INSERT INTO `concert` (`company_id`, `venue_id`, `venue_layout_id`, `title`, `du
                        `ended_at`,
                        `booking_started_at`, `booking_ended_at`, `is_sellable`, `is_deleted`, `created_at`,
                        `updated_at`, `thumbnail`, `description`)
-VALUES (1, 1, 1, '아이유 전국투어 - 서울', 200, '2025-06-01 18:00:00', '2025-06-01 21:00:00',
-        '2025-05-01 10:00:00', '2025-06-01 00:00:00', true, false, NOW(), NOW(), 'iu_seoul.jpg',
+VALUES (1, 1, 1, '아이유 전국투어 - 서울', 200, '2026-06-01 18:00:00', '2026-06-01 21:00:00',
+        '2025-05-01 10:00:00', '2026-06-01 00:00:00', true, false, NOW(), NOW(), 'iu_seoul.jpg',
         '아이유의 2025년 전국투어 첫 공연'),
        (2, 2, 4, '방탄소년단 팬미팅 - 부산', 100, '2025-06-10 19:00:00', '2025-06-10 22:00:00',
         '2025-05-10 12:00:00', '2025-06-10 00:00:00', true, false, NOW(), NOW(), 'bts_busan.jpg', 'BTS 팬들과 함께하는 특별한 밤'),
@@ -97,10 +97,17 @@ VALUES (1, 1, 1, '아이유 전국투어 - 서울', 200, '2025-06-01 18:00:00', 
        (2, 2, 4, '라포엠 부산 리사이틀', 300, '2025-09-25 18:00:00', '2025-09-25 20:00:00',
         '2025-08-25 12:00:00', '2025-09-25 00:00:00', true, false, NOW(), NOW(), 'lapoem_busan.jpg', '클래식과 대중의 경계에서');
 
+INSERT INTO `concert_ticketing_config` (`id`, `capacity`, `started_at`, `ended_at`)
+VALUES (1, 100, '2025-05-01 10:00:00', '2026-06-01 00:00:00');
+
 INSERT INTO `concert_category` (name)
 VALUES ('발라드'),
        ('힙합'),
        ('락');
+
+INSERT INTO `concert_concert_category` (`concert_id`, `category_id`)
+VALUES (1, 1),
+       (1, 2);
 
 INSERT INTO `concert_detail_image` (concert_id, image_url)
 VALUES (1, 'iu_seoul_1.jpg'),

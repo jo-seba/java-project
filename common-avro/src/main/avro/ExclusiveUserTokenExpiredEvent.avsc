@@ -1,0 +1,15 @@
+{
+  "name": "ExclusiveUserTokenExpiredEvent",
+  "namespace": "com.concertticketing.commonavro",
+  "type": "record",
+  "fields": [
+    {
+      "name": "userId",
+      "type": "long"
+    },
+    {
+      "name": "concertId",
+      "type": "long"
+    }
+  ]
+}

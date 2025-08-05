@@ -127,6 +127,15 @@ CREATE TABLE `concert` (
     FOREIGN KEY (venue_id) REFERENCES venue(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+DROP TABLE IF EXISTS concert_ticketing_config;
+CREATE TABLE `concert_ticketing_config` (
+    `id`            bigint      NOT NULL    PRIMARY KEY,
+    `capacity`      int         NOT NULL    DEFAULT 500,
+    `started_at`	timestamp	NOT NULL,
+    `ended_at`	    timestamp	NOT NULL,
+    FOREIGN KEY (id) REFERENCES concert(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 DROP TABLE IF EXISTS concert_category;
 CREATE TABLE `concert_category` (
     `id`    int         NOT NULL    auto_increment PRIMARY KEY,

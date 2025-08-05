@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: scheduler-core
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/test_db}
+    username: ${DB_USERNAME:test_user}
+    password: ${DB_PASSWORD:test_password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+redis:
+  cache:
+    host: ${REDIS_CACHE_HOST:localhost}
+    port: ${REDIS_CACHE_PORT:6380}
+  queue:
+    host: ${REDIS_QUEUE_HOST:localhost}
+    port: ${REDIS_QUEUE_PORT:6381}
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.orm.jdbc.bind: trace

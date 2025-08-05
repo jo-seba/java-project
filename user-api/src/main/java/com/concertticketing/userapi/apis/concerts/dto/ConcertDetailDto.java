@@ -31,7 +31,9 @@ public class ConcertDetailDto {
         @Schema(description = "공연장 내 예약 구역 정보")
         List<VenueAreaDto> areas,
         @Schema(description = "디테일 이미지들")
-        List<String> detailImages
+        List<String> detailImages,
+        @Schema(description = "카테고리들")
+        List<String> categories
     ) {
     }
 }

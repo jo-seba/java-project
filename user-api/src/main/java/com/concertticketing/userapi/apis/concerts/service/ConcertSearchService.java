@@ -7,26 +7,33 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.concertticketing.commonerror.exception.common.CommonNotFoundException;
 import com.concertticketing.userapi.apis.concerts.constant.ConcertSort;
+import com.concertticketing.userapi.apis.concerts.dbdto.ConcertListItemDBDto;
+import com.concertticketing.userapi.apis.concerts.dbdto.ConcertTicketingCacheDBDto;
 import com.concertticketing.userapi.apis.concerts.domain.Concert;
-import com.concertticketing.userapi.apis.concerts.dto.ConcertListDto;
 import com.concertticketing.userapi.apis.concerts.repository.ConcertRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ConcertSearchService {
     private final ConcertRepository concertRepository;
 
-    @Transactional(readOnly = true)
-    public Concert findConcert(Long id) {
-        return concertRepository.findConcert(id)
+    /**
+     * @return concert with Venue, VenueLayout, ConcertCategories and ConcertCategory
+     */
+    public Concert findDetail(Long id) {
+        return concertRepository.findConcertDetail(id)
             .orElseThrow(CommonNotFoundException::new);
     }
 
-    @Transactional(readOnly = true)
-    public Page<ConcertListDto.ConcertListItem> findConcerts(ConcertSort sort, Pageable pageable) {
-        Page<ConcertListDto.ConcertListItem> concerts = concertRepository.findConcerts(sort, pageable);
-        return concerts;
+    public Page<ConcertListItemDBDto> findAll(ConcertSort sort, Pageable pageable) {
+        return concertRepository.findConcerts(sort, pageable);
+    }
+
+    public ConcertTicketingCacheDBDto findWithTicketingQueueConfig(Long concertId) {
+        return concertRepository.findConcertWithTicketingQueueConfig(concertId)
+            .orElseThrow(CommonNotFoundException::new);
     }
 }

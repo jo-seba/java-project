@@ -6,9 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.concertticketing.userapi.apis.concerts.dbdto.ConcertListItemDBDto;
 import com.concertticketing.userapi.apis.concerts.domain.Concert;
 import com.concertticketing.userapi.apis.concerts.dto.ConcertDetailDto.ConcertDetailRes;
-import com.concertticketing.userapi.apis.concerts.dto.ConcertListDto;
 import com.concertticketing.userapi.apis.concerts.dto.ConcertListDto.ConcertListQuery;
 import com.concertticketing.userapi.apis.concerts.dto.ConcertListDto.ConcertListRes;
 import com.concertticketing.userapi.apis.concerts.mapper.ConcertMapper;
@@ -33,14 +33,14 @@ public class ConcertUseCase {
 
     @Transactional(readOnly = true)
     public ConcertDetailRes getConcert(Long id) {
-        Concert detailConcert = concertSearchService.findConcert(id);
-        List<VenueArea> areas = areaSearchService.findAreas(detailConcert.getVenueLayoutId());
+        Concert detailConcert = concertSearchService.findDetail(id);
+        List<VenueArea> areas = areaSearchService.findAreas(detailConcert.getVenueLayout().getId());
 
-        return concertMapper.toDetailDto(detailConcert, areas);
+        return concertMapper.toConcertDetailDto(detailConcert, areas);
     }
 
     public ConcertListRes getConcerts(ConcertListQuery query) {
-        Page<ConcertListDto.ConcertListItem> concerts = concertSearchService.findConcerts(query.getConcertSortEnum(),
+        Page<ConcertListItemDBDto> concerts = concertSearchService.findAll(query.getConcertSortEnum(),
             PageRequest.of(query.getPageablePage(), LIST_PAGE_SIZE));
 
         return new ConcertListRes(

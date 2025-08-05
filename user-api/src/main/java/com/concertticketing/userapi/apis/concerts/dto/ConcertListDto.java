@@ -1,10 +1,9 @@
 package com.concertticketing.userapi.apis.concerts.dto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import com.concertticketing.userapi.apis.concerts.constant.ConcertSort;
-import com.querydsl.core.annotations.QueryProjection;
+import com.concertticketing.userapi.apis.concerts.dbdto.ConcertListItemDBDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
@@ -32,26 +31,7 @@ public class ConcertListDto {
         @Schema(description = "전체 페이지")
         int totalPage,
         @Schema(description = "콘서트 리스트")
-        List<ConcertListItem> concerts
+        List<ConcertListItemDBDto> concerts
     ) {
-    }
-
-    public record ConcertListItem(
-        @Schema(description = "id")
-        Long id,
-        @Schema(description = "콘서트 이름")
-        String title,
-        @Schema(description = "공연장 이름")
-        String venueName,
-        @Schema(description = "섬네일")
-        String thumbnail,
-        @Schema(description = "콘서트 시작")
-        LocalDateTime startedAt,
-        @Schema(description = "콘서트 종료")
-        LocalDateTime endedAt
-    ) {
-        @QueryProjection
-        public ConcertListItem {
-        }
     }
 }
