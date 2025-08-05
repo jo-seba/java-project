@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 
 import com.concertticketing.userapi.apis.concerts.constant.ConcertSort;
 import com.concertticketing.userapi.apis.concerts.dbdto.ConcertListItemDBDto;
-import com.concertticketing.userapi.apis.concerts.dbdto.ConcertTicketingCacheDBDto;
+import com.concertticketing.userapi.apis.concerts.dbdto.ConcertTicketingInfoDBDto;
 
 public interface ConcertRepositoryCustom {
     Page<ConcertListItemDBDto> findConcerts(ConcertSort sort, Pageable pageable);
 
-    Optional<ConcertTicketingCacheDBDto> findConcertWithTicketingQueueConfig(Long concertId);
+    Optional<ConcertTicketingInfoDBDto> findConcertTicketingInfo(Long concertId);
 }

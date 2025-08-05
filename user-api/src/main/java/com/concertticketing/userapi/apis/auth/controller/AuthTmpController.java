@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.concertticketing.userapi.apis.auth.dto.TmpSignInDto.TmpSignInBody;
 import com.concertticketing.userapi.apis.auth.dto.TmpSignInDto.TmpSignInRes;
-import com.concertticketing.userapi.apis.auth.usecase.AuthTmpUseCase;
+import com.concertticketing.userapi.apis.auth.facade.AuthTmpFacade;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,14 +17,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth/tmp")
 public class AuthTmpController {
-    private final AuthTmpUseCase authTmpUseCase;
+    private final AuthTmpFacade authTmpFacade;
 
     @PostMapping("/sign-in")
     public ResponseEntity<TmpSignInRes> tmpSignIn(
         @RequestBody @Validated TmpSignInBody body
     ) {
         return ResponseEntity.ok(
-            authTmpUseCase.generateAccessAndRefreshTokens(body.id())
+            authTmpFacade.generateAccessAndRefreshTokens(body.id())
         );
     }
 }

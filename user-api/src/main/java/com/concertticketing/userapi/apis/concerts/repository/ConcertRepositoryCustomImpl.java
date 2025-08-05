@@ -13,9 +13,9 @@ import org.springframework.data.support.PageableExecutionUtils;
 
 import com.concertticketing.userapi.apis.concerts.constant.ConcertSort;
 import com.concertticketing.userapi.apis.concerts.dbdto.ConcertListItemDBDto;
-import com.concertticketing.userapi.apis.concerts.dbdto.ConcertTicketingCacheDBDto;
+import com.concertticketing.userapi.apis.concerts.dbdto.ConcertTicketingInfoDBDto;
 import com.concertticketing.userapi.apis.concerts.dbdto.QConcertListItemDBDto;
-import com.concertticketing.userapi.apis.concerts.dbdto.QConcertTicketingCacheDBDto;
+import com.concertticketing.userapi.apis.concerts.dbdto.QConcertTicketingInfoDBDto;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -50,10 +50,10 @@ public class ConcertRepositoryCustomImpl implements ConcertRepositoryCustom {
     }
 
     @Override
-    public Optional<ConcertTicketingCacheDBDto> findConcertWithTicketingQueueConfig(Long concertId) {
+    public Optional<ConcertTicketingInfoDBDto> findConcertTicketingInfo(Long concertId) {
         return Optional.ofNullable(
             queryFactory.select(
-                    new QConcertTicketingCacheDBDto(
+                    new QConcertTicketingInfoDBDto(
                         concert.id,
                         concert.bookingStartedAt,
                         concert.bookingEndedAt,

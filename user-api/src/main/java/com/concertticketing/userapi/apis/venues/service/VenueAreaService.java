@@ -12,7 +12,8 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class VenueAreaSearchService {
+@Transactional(readOnly = true)
+public class VenueAreaService {
     private final VenueAreaRepository areaRepository;
 
     @Transactional(readOnly = true)

@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTicketingCache;
-import com.concertticketing.userapi.apis.concerts.dbdto.ConcertTicketingCacheDBDto;
+import com.concertticketing.userapi.apis.concerts.dbdto.ConcertTicketingInfoDBDto;
 import com.concertticketing.userapi.apis.concerts.domain.Concert;
 import com.concertticketing.userapi.apis.concerts.dto.ConcertDetailDto.ConcertDetailRes;
 import com.concertticketing.userapi.apis.venues.domain.VenueArea;
@@ -27,5 +27,5 @@ public interface ConcertMapper {
     @Mapping(target = "categories", source = "concert.concertCategories", qualifiedByName = "convertConcertConcertCategoryListToStringList")
     ConcertDetailRes toConcertDetailDto(Concert concert, List<VenueArea> areas);
 
-    ConcertTicketingCache toConcertTicketingCache(ConcertTicketingCacheDBDto concert);
+    ConcertTicketingCache toConcertTicketingCache(ConcertTicketingInfoDBDto concert);
 }

@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.concertticketing.userapi.apis.concerts.service.ConcertCacheSearchService;
+import com.concertticketing.userapi.apis.concerts.service.ConcertCacheService;
 import com.concertticketing.userapi.security.authentication.OpaqueTokenAuthenticationToken;
 
 import jakarta.servlet.FilterChain;
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class OpaqueTokenAuthenticationFilter extends OncePerRequestFilter {
-    private final ConcertCacheSearchService concertCacheSearchService;
+    private final ConcertCacheService concertCacheService;
 
     @Override
     protected void doFilterInternal(
@@ -32,7 +32,7 @@ public class OpaqueTokenAuthenticationFilter extends OncePerRequestFilter {
         String token = getToken(request);
 
         Optional.ofNullable(token)
-            .flatMap(concertCacheSearchService::getConcertTokenUser)
+            .flatMap(concertCacheService::getConcertTokenUser)
             .map(OpaqueTokenAuthenticationToken::new)
             .ifPresent(auth -> SecurityContextHolder.getContext().setAuthentication(auth));
 

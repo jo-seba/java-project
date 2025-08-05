@@ -15,5 +15,5 @@ public interface ConcertRepository extends JpaRepository<Concert, Long>, Concert
         + "JOIN FETCH c.venueLayout "
         + "LEFT JOIN FETCH c.concertCategories cc LEFT JOIN FETCH cc.category "
         + "WHERE c.id = :id")
-    Optional<Concert> findConcertDetail(Long id);
+    Optional<Concert> findConcert(Long id);
 }

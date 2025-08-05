@@ -1,4 +1,4 @@
-package com.concertticketing.userapi.apis.concerts.usecase;
+package com.concertticketing.userapi.apis.concerts.facade;
 
 import static com.concertticketing.commonutils.TimeUtils.*;
 
@@ -11,42 +11,37 @@ import com.concertticketing.commonerror.exception.common.CommonConflictException
 import com.concertticketing.commonutils.TokenUtils;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTicketingCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTokenUserCache;
-import com.concertticketing.userapi.apis.concerts.dto.ConcertTicketingEntryDto.ConcertTicketingEntryRes;
-import com.concertticketing.userapi.apis.concerts.dto.ConcertTicketingStatusDto.ConcertTicketingStatusRes;
+import com.concertticketing.userapi.apis.concerts.dto.ConcertTicketingEntryDto;
+import com.concertticketing.userapi.apis.concerts.dto.ConcertTicketingStatusDto;
 import com.concertticketing.userapi.apis.concerts.mapper.ConcertMapper;
-import com.concertticketing.userapi.apis.concerts.service.ConcertCacheCreateService;
-import com.concertticketing.userapi.apis.concerts.service.ConcertCacheDeleteService;
-import com.concertticketing.userapi.apis.concerts.service.ConcertCacheSearchService;
-import com.concertticketing.userapi.apis.concerts.service.ConcertCacheUpdateService;
-import com.concertticketing.userapi.apis.concerts.service.ConcertSearchService;
-import com.concertticketing.userapi.common.annotation.UseCase;
+import com.concertticketing.userapi.apis.concerts.service.ConcertCacheService;
+import com.concertticketing.userapi.apis.concerts.service.ConcertService;
+import com.concertticketing.userapi.common.annotation.Facade;
 import com.concertticketing.userapi.common.kafka.KafkaProducer;
 
 import lombok.RequiredArgsConstructor;
 
-@UseCase
+@Facade
 @RequiredArgsConstructor
-public class ConcertTicketingUseCase {
+public class ConcertTicketingFacade {
     private final KafkaProducer kafkaProducer;
 
     private final ConcertMapper concertMapper;
-    private final ConcertSearchService concertSearchService;
 
-    private final ConcertCacheCreateService concertCacheCreateService;
-    private final ConcertCacheSearchService concertCacheSearchService;
-    private final ConcertCacheUpdateService concertCacheUpdateService;
-    private final ConcertCacheDeleteService concertCacheDeleteService;
+    private final ConcertService concertService;
+
+    private final ConcertCacheService concertCacheService;
 
     private final int MAX_TOKEN_GENERATION_RETRIES = 5;
 
-    public ConcertTicketingEntryRes attemptTicketingEntry(Long userId, Long concertId) {
-        ConcertTicketingCache concertTicketingCache = concertCacheSearchService
+    public ConcertTicketingEntryDto.ConcertTicketingEntryRes attemptTicketingEntry(Long userId, Long concertId) {
+        ConcertTicketingCache concertTicketingCache = concertCacheService
             .getConcertTicketing(concertId)
             .orElseGet(() -> {
                 ConcertTicketingCache newCachedConcert = concertMapper.toConcertTicketingCache(
-                    concertSearchService.findWithTicketingQueueConfig(concertId)
+                    concertService.findConcertTicketingInfo(concertId)
                 );
-                concertCacheCreateService.setConcertTicketing(concertId, newCachedConcert);
+                concertCacheService.setConcertTicketing(concertId, newCachedConcert);
                 return newCachedConcert;
             });
 
@@ -58,16 +53,16 @@ public class ConcertTicketingUseCase {
             userId,
             concertId,
             concertTicketingCache.isQueueExclusive()
-                ? concertCacheUpdateService.incrConcertWaitingCount(concertId)
+                ? concertCacheService.incrConcertWaitingCount(concertId)
                 : null
         );
 
         String token = Stream.generate(() ->
-                concertCacheDeleteService.popConcertOpaqueToken()
+                concertCacheService.popConcertOpaqueToken()
                     .orElseGet(TokenUtils::opaqueTokenGenerate)
             )
             .limit(MAX_TOKEN_GENERATION_RETRIES)
-            .filter(t -> concertCacheCreateService.setConcertTokenUserNX(
+            .filter(t -> concertCacheService.setConcertTokenUserNX(
                 t,
                 concertTokenUserCache
             ))
@@ -95,16 +90,17 @@ public class ConcertTicketingUseCase {
             );
         }
 
-        return new ConcertTicketingEntryRes(
+        return new ConcertTicketingEntryDto.ConcertTicketingEntryRes(
             token,
             concertTicketingCache.isQueueExclusive()
         );
     }
 
-    public ConcertTicketingStatusRes getTicketingStatus(ConcertTokenUserCache concertTokenUserCache) {
-        Long lastWaitingCount = concertCacheSearchService.getConcertLastWaitingCount(concertTokenUserCache.concertId());
+    public ConcertTicketingStatusDto.ConcertTicketingStatusRes getTicketingStatus(
+        ConcertTokenUserCache concertTokenUserCache) {
+        Long lastWaitingCount = concertCacheService.getConcertLastWaitingCount(concertTokenUserCache.concertId());
         Long remainingWaitingCount = concertTokenUserCache.lastWaitingCount() - lastWaitingCount;
-        return new ConcertTicketingStatusRes(
+        return new ConcertTicketingStatusDto.ConcertTicketingStatusRes(
             concertTokenUserCache.status(),
             remainingWaitingCount > 0
                 ? remainingWaitingCount

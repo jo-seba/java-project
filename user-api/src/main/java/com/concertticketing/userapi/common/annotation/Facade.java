@@ -12,5 +12,5 @@ import org.springframework.stereotype.Component;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
-public @interface UseCase {
+public @interface Facade {
 }

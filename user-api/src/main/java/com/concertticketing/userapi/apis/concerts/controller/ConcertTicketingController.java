@@ -12,7 +12,7 @@ import com.concertticketing.commonerror.exception.common.CommonBadRequestExcepti
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTokenUserCache;
 import com.concertticketing.userapi.apis.concerts.dto.ConcertTicketingEntryDto.ConcertTicketingEntryRes;
 import com.concertticketing.userapi.apis.concerts.dto.ConcertTicketingStatusDto.ConcertTicketingStatusRes;
-import com.concertticketing.userapi.apis.concerts.usecase.ConcertTicketingUseCase;
+import com.concertticketing.userapi.apis.concerts.facade.ConcertTicketingFacade;
 
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/concerts/{concertId}/tickets")
 public class ConcertTicketingController {
-    private final ConcertTicketingUseCase concertTicketingUseCase;
+    private final ConcertTicketingFacade concertTicketingFacade;
 
     @PostMapping("/entry")
     public ResponseEntity<ConcertTicketingEntryRes> attemptTicketingEntry(
@@ -29,7 +29,7 @@ public class ConcertTicketingController {
         @PathVariable @Min(1) Long concertId
     ) {
         return ResponseEntity.ok(
-            concertTicketingUseCase.attemptTicketingEntry(userId, concertId)
+            concertTicketingFacade.attemptTicketingEntry(userId, concertId)
         );
     }
 
@@ -42,7 +42,7 @@ public class ConcertTicketingController {
             throw new CommonBadRequestException();
         }
         return ResponseEntity.ok(
-            concertTicketingUseCase.getTicketingStatus(concertTokenUserCache)
+            concertTicketingFacade.getTicketingStatus(concertTokenUserCache)
         );
     }
 }
