@@ -10,11 +10,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class VenueLayoutSearchService {
+public class VenueLayoutService {
     private final VenueLayoutRepository venueLayoutRepository;
 
-    public VenueLayout getReference(Long venueLayoutId) {
+    // Read
+    @Transactional(readOnly = true)
+    public VenueLayout getVenueLayoutReference(Long venueLayoutId) {
         return venueLayoutRepository.getReferenceById(venueLayoutId);
     }
 }

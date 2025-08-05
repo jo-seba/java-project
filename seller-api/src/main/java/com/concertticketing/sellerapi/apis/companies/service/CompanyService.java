@@ -10,11 +10,11 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class CompanySearchService {
+public class CompanyService {
     private final CompanyRepository companyRepository;
 
-    public Company getReference(Integer id) {
+    @Transactional(readOnly = true)
+    public Company getCompanyReference(Integer id) {
         return companyRepository.getReferenceById(id);
     }
 }

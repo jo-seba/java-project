@@ -10,11 +10,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class VenueSearchService {
+public class VenueService {
     private final VenueRepository venueRepository;
 
-    public Venue getReference(Integer venueId) {
+    // Read
+    @Transactional(readOnly = true)
+    public Venue getVenueReference(Integer venueId) {
         return venueRepository.getReferenceById(venueId);
     }
 }

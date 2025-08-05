@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.concertticketing.sellerapi.apis.auth.dto.TokenDto.TokenBody;
 import com.concertticketing.sellerapi.apis.auth.dto.TokenDto.TokenRes;
-import com.concertticketing.sellerapi.apis.auth.usecase.AuthUseCase;
+import com.concertticketing.sellerapi.apis.auth.facade.AuthFacade;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthController {
-    private final AuthUseCase authUseCase;
+    private final AuthFacade authFacade;
 
     @PostMapping("/token")
     public ResponseEntity<TokenRes> newAccessToken(
         @RequestBody @Validated TokenBody body
     ) {
-        return ResponseEntity.ok(authUseCase.generateAccessToken(body.refreshToken()));
+        return ResponseEntity.ok(authFacade.generateAccessToken(body.refreshToken()));
     }
 }

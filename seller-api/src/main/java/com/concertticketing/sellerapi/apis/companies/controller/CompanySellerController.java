@@ -20,7 +20,7 @@ import com.concertticketing.sellerapi.apis.companies.dto.AddCompanySellerDto.Add
 import com.concertticketing.sellerapi.apis.companies.dto.CompanySellerListDto.CompanySellerListQuery;
 import com.concertticketing.sellerapi.apis.companies.dto.CompanySellerListDto.CompanySellerListRes;
 import com.concertticketing.sellerapi.apis.companies.dto.UpdateCompanySellerDto.UpdateCompanySellerBody;
-import com.concertticketing.sellerapi.apis.companies.usecase.CompanySellerUseCase;
+import com.concertticketing.sellerapi.apis.companies.facade.CompanySellerFacade;
 import com.concertticketing.sellerapi.common.response.SuccessResponse;
 import com.concertticketing.sellerapi.security.annotation.AuthenticatedManager;
 import com.concertticketing.sellerapi.security.annotation.AuthenticatedOwner;
@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/companies/sellers")
 public class CompanySellerController {
-    private final CompanySellerUseCase companySellerUseCase;
+    private final CompanySellerFacade companySellerFacade;
 
     @Operation(
         summary = "회사 내 직원 추가",
@@ -58,7 +58,7 @@ public class CompanySellerController {
         @AuthenticationPrincipal SecurityUserDetails userDetails,
         @RequestBody @Validated AddCompanySellerBody body
     ) {
-        companySellerUseCase.addCompanySeller(userDetails.getCompanyId(), body);
+        companySellerFacade.addCompanySeller(userDetails.getCompanyId(), body);
         return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.created());
     }
 
@@ -78,7 +78,7 @@ public class CompanySellerController {
         @ModelAttribute @Validated CompanySellerListQuery query
     ) {
         return ResponseEntity.ok(SuccessResponse.from(
-            companySellerUseCase.getCompanySellers(
+            companySellerFacade.getCompanySellers(
                 userDetails.getCompanyId(),
                 query
             )
@@ -102,7 +102,7 @@ public class CompanySellerController {
         @PathVariable Integer sellerId,
         @RequestBody @Validated UpdateCompanySellerBody body
     ) {
-        companySellerUseCase.updateCompanySeller(userDetails, sellerId, body);
+        companySellerFacade.updateCompanySeller(userDetails, sellerId, body);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(SuccessResponse.noContent());
     }
 
@@ -122,7 +122,7 @@ public class CompanySellerController {
         @AuthenticationPrincipal SecurityUserDetails userDetails,
         @PathVariable Integer sellerId
     ) {
-        companySellerUseCase.deleteCompanySeller(userDetails, sellerId);
+        companySellerFacade.deleteCompanySeller(userDetails, sellerId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(SuccessResponse.noContent());
     }
 }

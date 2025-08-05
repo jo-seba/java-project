@@ -13,16 +13,32 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class ConcertSearchService {
+public class ConcertService {
     private final ConcertRepository concertRepository;
 
-    public Concert findWithVenueAndVenueLayoutAndCategories(Long concertId, Integer companyId) {
+    // Create
+    @Transactional
+    public Concert saveConcert(Concert concert) {
+        return concertRepository.save(concert);
+    }
+
+    // Read
+    @Transactional(readOnly = true)
+    public Concert findConcertWithVenueAndVenueLayoutAndCategories(Long concertId, Integer companyId) {
         return concertRepository.findConcertWithVenueAndVenueLayoutAndCategories(concertId, companyId)
             .orElseThrow(CommonNotFoundException::new);
     }
 
-    public Page<Concert> findAllWithVenue(Integer companyId, Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<Concert> findConcertsWithVenue(Integer companyId, Pageable pageable) {
         return concertRepository.findConcertsWithVenue(companyId, pageable);
+    }
+
+    // Update
+
+    // Delete
+    @Transactional
+    public void deleteConcert(Long id, Integer companyId) {
+        concertRepository.deleteConcertByIdAndCompanyId(id, companyId);
     }
 }

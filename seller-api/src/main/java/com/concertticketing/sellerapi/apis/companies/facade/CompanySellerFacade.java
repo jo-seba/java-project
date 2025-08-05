@@ -1,4 +1,4 @@
-package com.concertticketing.sellerapi.apis.companies.usecase;
+package com.concertticketing.sellerapi.apis.companies.facade;
 
 import static com.concertticketing.sellerapi.common.constant.PageConstants.*;
 
@@ -8,47 +8,37 @@ import org.springframework.data.domain.PageRequest;
 import com.concertticketing.commonerror.exception.common.CommonBadRequestException;
 import com.concertticketing.sellerapi.apis.companies.dto.AddCompanySellerDto;
 import com.concertticketing.sellerapi.apis.companies.dto.CompanySellerListDto;
-import com.concertticketing.sellerapi.apis.companies.dto.CompanySellerListDto.CompanySellerListQuery;
-import com.concertticketing.sellerapi.apis.companies.dto.CompanySellerListDto.CompanySellerListRes;
-import com.concertticketing.sellerapi.apis.companies.dto.UpdateCompanySellerDto.UpdateCompanySellerBody;
+import com.concertticketing.sellerapi.apis.companies.dto.UpdateCompanySellerDto;
 import com.concertticketing.sellerapi.apis.sellers.constant.SellerRole;
 import com.concertticketing.sellerapi.apis.sellers.mapper.SellerMapper;
-import com.concertticketing.sellerapi.apis.sellers.service.SellerCreateService;
-import com.concertticketing.sellerapi.apis.sellers.service.SellerDeleteService;
-import com.concertticketing.sellerapi.apis.sellers.service.SellerSearchService;
-import com.concertticketing.sellerapi.apis.sellers.service.SellerUpdateService;
-import com.concertticketing.sellerapi.common.annotation.UseCase;
+import com.concertticketing.sellerapi.apis.sellers.service.SellerService;
+import com.concertticketing.sellerapi.common.annotation.Facade;
 import com.concertticketing.sellerapi.security.authentication.SecurityUserDetails;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@UseCase
+@Facade
 @RequiredArgsConstructor
-public class CompanySellerUseCase {
+public class CompanySellerFacade {
     private final SellerMapper sellerMapper;
 
-    private final SellerCreateService sellerCreateService;
-    private final SellerSearchService sellerSearchService;
-    private final SellerUpdateService sellerUpdateService;
-    private final SellerDeleteService sellerDeleteService;
+    private final SellerService sellerService;
 
     public void addCompanySeller(Integer companyId, AddCompanySellerDto.AddCompanySellerBody body) {
-        sellerCreateService.save(sellerMapper.toSeller(companyId, body));
+        sellerService.saveSeller(sellerMapper.toSeller(companyId, body));
     }
 
-    public CompanySellerListRes getCompanySellers(
+    public CompanySellerListDto.CompanySellerListRes getCompanySellers(
         Integer companyId,
-        CompanySellerListQuery query
+        CompanySellerListDto.CompanySellerListQuery query
     ) {
-        Page<CompanySellerListDto.CompanySellerListItem> sellers = sellerSearchService.findSellers(
+        Page<CompanySellerListDto.CompanySellerListItem> sellers = sellerService.findSellers(
             companyId,
             query.sort(),
             PageRequest.of(query.getPageablePage(), DEFAULT_PAGE_SIZE)
         );
 
-        return new CompanySellerListRes(
+        return new CompanySellerListDto.CompanySellerListRes(
             query.page(),
             sellers.getTotalPages(),
             sellers.getContent()
@@ -58,7 +48,7 @@ public class CompanySellerUseCase {
     public void updateCompanySeller(
         SecurityUserDetails userDetails,
         Integer sellerId,
-        UpdateCompanySellerBody body
+        UpdateCompanySellerDto.UpdateCompanySellerBody body
     ) {
         boolean isSelf = userDetails.getId().equals(sellerId);
         boolean isOwnerRoleBody = body.role() == SellerRole.OWNER;
@@ -67,7 +57,7 @@ public class CompanySellerUseCase {
             throw new CommonBadRequestException();
         }
 
-        sellerUpdateService.update(
+        sellerService.updateSeller(
             sellerId, userDetails.getCompanyId(),
             body.role(), body.name(), body.phoneNumber()
         );
@@ -80,6 +70,6 @@ public class CompanySellerUseCase {
         if (userDetails.getId().equals(sellerId)) {
             throw new CommonBadRequestException();
         }
-        sellerDeleteService.delete(sellerId, userDetails.getCompanyId());
+        sellerService.deleteSeller(sellerId, userDetails.getCompanyId());
     }
 }

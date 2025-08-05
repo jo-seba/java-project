@@ -19,7 +19,7 @@ import com.concertticketing.sellerapi.apis.concerts.dto.AddConcertDto.AddConcert
 import com.concertticketing.sellerapi.apis.concerts.dto.ConcertDetailDto.ConcertDetailRes;
 import com.concertticketing.sellerapi.apis.concerts.dto.ConcertListDto.ConcertListQuery;
 import com.concertticketing.sellerapi.apis.concerts.dto.UpdateConcertDto.UpdateConcertBody;
-import com.concertticketing.sellerapi.apis.concerts.usecase.ConcertUseCase;
+import com.concertticketing.sellerapi.apis.concerts.facade.ConcertFacade;
 import com.concertticketing.sellerapi.common.response.SuccessResponse;
 import com.concertticketing.sellerapi.security.annotation.AuthenticatedManager;
 import com.concertticketing.sellerapi.security.authentication.SecurityUserDetails;
@@ -33,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/concerts")
 public class ConcertController {
-    private final ConcertUseCase concertUseCase;
+    private final ConcertFacade concertFacade;
 
     @PostMapping
     @AuthenticatedManager
@@ -42,7 +42,7 @@ public class ConcertController {
         @RequestBody @Validated AddConcertBody body
     ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.from(
-                concertUseCase.addConcert(userDetails.getCompanyId(), body)
+                concertFacade.addConcert(userDetails.getCompanyId(), body)
             )
         );
     }
@@ -53,7 +53,7 @@ public class ConcertController {
         @ModelAttribute @Validated ConcertListQuery query
     ) {
         return ResponseEntity.ok(SuccessResponse.from(
-                concertUseCase.getConcerts(userDetails.getCompanyId(), query)
+                concertFacade.getConcerts(userDetails.getCompanyId(), query)
             )
         );
     }
@@ -64,7 +64,7 @@ public class ConcertController {
         @PathVariable @Min(1) Long id
     ) {
         return ResponseEntity.ok(SuccessResponse.from(
-                concertUseCase.getConcert(id, userDetails.getCompanyId())
+                concertFacade.getConcert(id, userDetails.getCompanyId())
             )
         );
     }
@@ -76,7 +76,7 @@ public class ConcertController {
         @PathVariable @Min(1) Long id,
         @RequestBody @Validated UpdateConcertBody body
     ) {
-        concertUseCase.updateConcert(id, userDetails.getCompanyId(), body);
+        concertFacade.updateConcert(id, userDetails.getCompanyId(), body);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(SuccessResponse.noContent());
     }
 
@@ -86,7 +86,7 @@ public class ConcertController {
         @AuthenticationPrincipal SecurityUserDetails userDetails,
         @PathVariable @Min(1) Long id
     ) {
-        concertUseCase.deleteConcert(id, userDetails.getCompanyId());
+        concertFacade.deleteConcert(id, userDetails.getCompanyId());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(SuccessResponse.noContent());
     }
 }
