@@ -1,7 +1,7 @@
 package com.concertticketing.userapi.apis.concerts.repository;
 
 import static com.concertticketing.userapi.apis.concerts.domain.QConcert.*;
-import static com.concertticketing.userapi.apis.concerts.domain.QConcertTicketingQueueConfig.*;
+import static com.concertticketing.userapi.apis.concerts.domain.QConcertTicketingConfig.*;
 import static com.concertticketing.userapi.apis.venues.domain.QVenue.*;
 
 import java.util.List;
@@ -57,10 +57,10 @@ public class ConcertRepositoryCustomImpl implements ConcertRepositoryCustom {
                         concert.id,
                         concert.bookingStartedAt,
                         concert.bookingEndedAt,
-                        concertTicketingQueueConfig.capacity
+                        concertTicketingConfig.capacity
                     )
                 ).from(concert)
-                .leftJoin(concertTicketingQueueConfig).on(concert.id.eq(concertTicketingQueueConfig.id))
+                .leftJoin(concertTicketingConfig).on(concert.id.eq(concertTicketingConfig.id))
                 .where(concert.id.eq(concertId))
                 .fetchOne()
         );

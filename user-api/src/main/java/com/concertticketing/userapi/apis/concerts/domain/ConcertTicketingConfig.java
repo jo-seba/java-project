@@ -12,11 +12,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "concert_ticketing_queue_config")
+@Table(name = "concert_ticketing_config")
 @Immutable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ConcertTicketingQueueConfig {
+public class ConcertTicketingConfig {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
