@@ -1,5 +1,8 @@
 package com.concertticketing.kafkaconsumer.domain.concert.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTokenUserCache;
@@ -10,11 +13,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ConcertCacheCreateService {
+public class ConcertCacheService {
     private final ConcertCacheRepository concertCacheRepository;
 
     private final ConcertQueueRepository concertQueueRepository;
 
+    // Create
     public void setConcertTokenUser(String token, ConcertTokenUserCache concertTokenUser) {
         concertCacheRepository.setConcertTokenUser(token, concertTokenUser);
     }
@@ -33,5 +37,33 @@ public class ConcertCacheCreateService {
 
     public void addConcertWaitingTokenHeartbeat(Long concertId, String token, long timestamp) {
         concertQueueRepository.addConcertWaitingTokenHeartbeat(concertId, token, timestamp);
+    }
+
+    // Read
+    public Optional<ConcertTokenUserCache> getConcertTokenUser(String token) {
+        return concertCacheRepository.getConcertTokenUser(token);
+    }
+
+    // Update
+
+    // Delete
+    public Long removeConcertActiveTokens(List<String> tokens) {
+        return concertQueueRepository.removeConcertActiveTokens(tokens.toArray());
+    }
+
+    public List<String> removeUserConcertOldTokens(Long concertId, Long userId) {
+        return concertQueueRepository.retainFirstPopRestConcertUserToken(concertId, userId);
+    }
+
+    public Long removeConcertWaitingTokens(Long concertId, List<String> tokens) {
+        return concertQueueRepository.removeConcertWaitingTokens(concertId, tokens.toArray());
+    }
+
+    public Long removeConcertActiveTokens(Long concertId, List<String> tokens) {
+        return concertQueueRepository.removeConcertActiveTokens(concertId, tokens.toArray());
+    }
+
+    public Long removeConcertWaitingTokenHeartbeats(Long concertId, List<String> tokens) {
+        return concertQueueRepository.removeConcertWaitingTokenHeartbeats(concertId, tokens.toArray());
     }
 }

@@ -17,9 +17,7 @@ import com.concertticketing.commonerror.exception.common.CommonNotFoundException
 import com.concertticketing.domainredis.common.constant.ConcertEntryStatus;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTokenUserCache;
 import com.concertticketing.kafkaconsumer.domain.concert.producer.ConcertProducer;
-import com.concertticketing.kafkaconsumer.domain.concert.service.ConcertCacheCreateService;
-import com.concertticketing.kafkaconsumer.domain.concert.service.ConcertCacheDeleteService;
-import com.concertticketing.kafkaconsumer.domain.concert.service.ConcertCacheSearchService;
+import com.concertticketing.kafkaconsumer.domain.concert.service.ConcertCacheService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,14 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 public class ConcertConsumer {
     private final ConcertProducer concertProducer;
 
-    private final ConcertCacheCreateService concertCacheCreateService;
-    private final ConcertCacheSearchService concertCacheSearchService;
-    private final ConcertCacheDeleteService concertCacheDeleteService;
+    private final ConcertCacheService concertCacheService;
 
     @KafkaListener(topics = {CONCERT_USER_JOINED_WAITING_QUEUE}, groupId = "add-concert-user-to-active-queue")
     public void addConcertUserToActiveQueue(UserJoinedWaitingQueueEvent event) {
         try {
-            ConcertTokenUserCache concertTokenUser = concertCacheSearchService.getConcertTokenUser(
+            ConcertTokenUserCache concertTokenUser = concertCacheService.getConcertTokenUser(
                 event.getToken()
             ).orElseThrow(CommonNotFoundException::new);
 
@@ -46,13 +42,13 @@ public class ConcertConsumer {
             }
 
             if (Boolean.FALSE.equals(
-                concertCacheCreateService.addConcertActiveTokenNX(event.getToken(), event.getCreatedAt())
+                concertCacheService.addConcertActiveTokenNX(event.getToken(), event.getCreatedAt())
             )) {
                 throw new CommonConflictException();
             }
 
             // 여러번 입장 시 기존 토큰 만료 처리
-            if (concertCacheCreateService.leftPushConcertUserToken(
+            if (concertCacheService.leftPushConcertUserToken(
                 event.getConcertId(),
                 event.getUserId(),
                 event.getToken()
@@ -63,7 +59,7 @@ public class ConcertConsumer {
                 ));
             }
 
-            concertCacheCreateService.setConcertTokenUser(
+            concertCacheService.setConcertTokenUser(
                 event.getToken(),
                 concertTokenUser.withStatus(ConcertEntryStatus.ALLOWED)
             );
@@ -78,7 +74,7 @@ public class ConcertConsumer {
     )
     public void addConcertUserToExclusiveWaitingQueue(UserJoinedExclusiveQueueEvent event) {
         try {
-            ConcertTokenUserCache concertTokenUser = concertCacheSearchService.getConcertTokenUser(
+            ConcertTokenUserCache concertTokenUser = concertCacheService.getConcertTokenUser(
                 event.getToken()
             ).orElseThrow(CommonNotFoundException::new);
 
@@ -87,7 +83,7 @@ public class ConcertConsumer {
             }
 
             if (Boolean.FALSE.equals(
-                concertCacheCreateService.addConcertWaitingTokenNX(
+                concertCacheService.addConcertWaitingTokenNX(
                     event.getConcertId(),
                     event.getToken(),
                     event.getCreatedAt()
@@ -97,7 +93,7 @@ public class ConcertConsumer {
             }
 
             // 여러번 입장 시 기존 토큰 만료 처리
-            if (concertCacheCreateService.leftPushConcertUserToken(
+            if (concertCacheService.leftPushConcertUserToken(
                 event.getConcertId(),
                 event.getUserId(),
                 event.getToken()
@@ -118,7 +114,7 @@ public class ConcertConsumer {
     )
     public void addExclusiveConcertTokenToHeartbeat(UserJoinedExclusiveQueueEvent event) {
         try {
-            concertCacheCreateService.addConcertWaitingTokenHeartbeat(
+            concertCacheService.addConcertWaitingTokenHeartbeat(
                 event.getConcertId(),
                 event.getToken(),
                 event.getCreatedAt()
@@ -131,11 +127,11 @@ public class ConcertConsumer {
     @KafkaListener(topics = {CONCERT_USER_TOKEN_EXPIRED}, groupId = "remove-concert-old-tokens")
     public void removeConcertOldTokens(UserTokenExpiredEvent event) {
         try {
-            List<String> oldTokens = concertCacheDeleteService.removeUserConcertOldTokens(
+            List<String> oldTokens = concertCacheService.removeUserConcertOldTokens(
                 event.getConcertId(),
                 event.getUserId()
             );
-            concertCacheDeleteService.removeConcertActiveTokens(oldTokens);
+            concertCacheService.removeConcertActiveTokens(oldTokens);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -144,14 +140,14 @@ public class ConcertConsumer {
     @KafkaListener(topics = {CONCERT_EXCLUSIVE_USER_TOKEN_EXPIRED}, groupId = "remove-concert-old-exclusive-tokens")
     public void removeConcertOldExclusiveTokens(ExclusiveUserTokenExpiredEvent event) {
         try {
-            List<String> oldTokens = concertCacheDeleteService.removeUserConcertOldTokens(
+            List<String> oldTokens = concertCacheService.removeUserConcertOldTokens(
                 event.getConcertId(),
                 event.getUserId()
             );
-            concertCacheDeleteService.removeConcertActiveTokens(event.getConcertId(), oldTokens);
-            concertCacheDeleteService.removeConcertWaitingTokens(event.getConcertId(), oldTokens);
+            concertCacheService.removeConcertActiveTokens(event.getConcertId(), oldTokens);
+            concertCacheService.removeConcertWaitingTokens(event.getConcertId(), oldTokens);
 
-            concertCacheDeleteService.removeConcertWaitingTokenHeartbeats(event.getConcertId(), oldTokens);
+            concertCacheService.removeConcertWaitingTokenHeartbeats(event.getConcertId(), oldTokens);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
