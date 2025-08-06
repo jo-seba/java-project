@@ -13,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class ConcertTicketingConfigSearchService {
+public class ConcertTicketingConfigService {
     private final ConcertTicketingConfigRepository concertTicketingConfigRepository;
 
+    @Transactional(readOnly = true)
     public Optional<ConcertTicketingConfig> findConcertTicketingConfig(LocalDate targetDate) {
         return concertTicketingConfigRepository.findConcertTicketingQueueConfig(
             targetDate.atStartOfDay(),

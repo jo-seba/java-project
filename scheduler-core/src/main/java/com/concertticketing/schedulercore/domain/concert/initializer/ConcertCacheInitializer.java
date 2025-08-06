@@ -10,8 +10,8 @@ import com.concertticketing.schedulercore.common.cache.LocalCacheInitStatus;
 import com.concertticketing.schedulercore.common.cache.LocalCacheManager;
 import com.concertticketing.schedulercore.domain.concert.mapper.ConcertMapper;
 import com.concertticketing.schedulercore.domain.concert.service.ConcertLocalCacheService;
-import com.concertticketing.schedulercore.domain.concert.service.ConcertSearchService;
-import com.concertticketing.schedulercore.domain.concert.service.ConcertTicketingConfigSearchService;
+import com.concertticketing.schedulercore.domain.concert.service.ConcertService;
+import com.concertticketing.schedulercore.domain.concert.service.ConcertTicketingConfigService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,9 +23,9 @@ public class ConcertCacheInitializer {
     private final LocalCacheManager localCacheManager;
     private final LocalCacheInitStatus localCacheInitStatus;
 
-    private final ConcertSearchService concertSearchService;
+    private final ConcertService concertService;
 
-    private final ConcertTicketingConfigSearchService concertTicketingConfigSearchService;
+    private final ConcertTicketingConfigService concertTicketingConfigService;
 
     private final ConcertLocalCacheService concertLocalCacheService;
 
@@ -37,7 +37,7 @@ public class ConcertCacheInitializer {
             23,
             50,
             concertLocalCacheService::putBookableConcerts,
-            concertSearchService::findBookableConcerts
+            concertService::findBookableConcerts
         );
         localCacheManager.initLocalCache(
             now,
@@ -45,7 +45,7 @@ public class ConcertCacheInitializer {
             51,
             concertLocalCacheService::putExclusiveConcert,
             date -> concertMapper.toConcertTicketingConfigDto(
-                concertTicketingConfigSearchService.findConcertTicketingConfig(date)
+                concertTicketingConfigService.findConcertTicketingConfig(date)
                     .orElse(null)
             )
         );

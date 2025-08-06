@@ -15,7 +15,7 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 import com.concertticketing.schedulercore.common.cache.LocalCacheInitStatus;
 import com.concertticketing.schedulercore.domain.concert.scheduler.ConcertScheduler;
-import com.concertticketing.schedulercore.domain.concert.service.ConcertCacheSearchService;
+import com.concertticketing.schedulercore.domain.concert.service.ConcertCacheService;
 import com.concertticketing.schedulercore.domain.concert.service.ConcertLocalCacheService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class SchedulerConfig implements SchedulingConfigurer {
 
     private final ConcertLocalCacheService concertLocalCacheService;
 
-    private final ConcertCacheSearchService concertCacheSearchService;
+    private final ConcertCacheService concertCacheService;
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
@@ -69,7 +69,7 @@ public class SchedulerConfig implements SchedulingConfigurer {
                 } else if (millisUntilBooking >= 0) {
                     return FIVE_SECONDS_MILLIS;
                 } else {
-                    return concertCacheSearchService
+                    return concertCacheService
                         .getConcertActiveTokenCount(concert.id()) > concert.capacity()
                         ? FIVE_SECONDS_MILLIS : THREE_SECONDS_MILLIS;
                 }

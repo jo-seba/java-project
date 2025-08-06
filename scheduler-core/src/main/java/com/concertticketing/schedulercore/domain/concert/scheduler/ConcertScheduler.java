@@ -15,12 +15,10 @@ import org.springframework.util.CollectionUtils;
 import com.concertticketing.commonerror.exception.common.CommonNotFoundException;
 import com.concertticketing.schedulercore.domain.concert.dto.ConcertTicketingConfigDto;
 import com.concertticketing.schedulercore.domain.concert.mapper.ConcertMapper;
-import com.concertticketing.schedulercore.domain.concert.service.ConcertCacheCreateService;
-import com.concertticketing.schedulercore.domain.concert.service.ConcertCacheDeleteService;
-import com.concertticketing.schedulercore.domain.concert.service.ConcertCacheSearchService;
+import com.concertticketing.schedulercore.domain.concert.service.ConcertCacheService;
 import com.concertticketing.schedulercore.domain.concert.service.ConcertLocalCacheService;
-import com.concertticketing.schedulercore.domain.concert.service.ConcertSearchService;
-import com.concertticketing.schedulercore.domain.concert.service.ConcertTicketingConfigSearchService;
+import com.concertticketing.schedulercore.domain.concert.service.ConcertService;
+import com.concertticketing.schedulercore.domain.concert.service.ConcertTicketingConfigService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,13 +31,11 @@ public class ConcertScheduler {
 
     private final ConcertLocalCacheService concertLocalCacheService;
 
-    private final ConcertCacheCreateService concertCacheCreateService;
-    private final ConcertCacheSearchService concertCacheSearchService;
-    private final ConcertCacheDeleteService concertCacheDeleteService;
+    private final ConcertCacheService concertCacheService;
 
-    private final ConcertSearchService concertSearchService;
+    private final ConcertService concertService;
 
-    private final ConcertTicketingConfigSearchService concertTicketingConfigSearchService;
+    private final ConcertTicketingConfigService concertTicketingConfigService;
 
     private final int WAITING_TO_ACTIVE_COUNT = 128;
 
@@ -48,7 +44,7 @@ public class ConcertScheduler {
         LocalDate targetDate = LocalDate.now().plusDays(1);
         concertLocalCacheService.putBookableConcerts(
             targetDate,
-            concertSearchService.findBookableConcerts(targetDate)
+            concertService.findBookableConcerts(targetDate)
         );
     }
 
@@ -58,7 +54,7 @@ public class ConcertScheduler {
         concertLocalCacheService.putExclusiveConcert(
             targetDate,
             concertMapper.toConcertTicketingConfigDto(
-                concertTicketingConfigSearchService
+                concertTicketingConfigService
                     .findConcertTicketingConfig(targetDate)
                     .orElse(null)
             )
@@ -70,13 +66,13 @@ public class ConcertScheduler {
         log.info("expire tokens");
         LocalDateTime now = LocalDateTime.now();
         long expiredAt = localDateTimeToLong(now.minus(CONCERT_ACTIVE_TOKENS_TTL));
-        Set<String> activeTokens = concertCacheSearchService.getConcertActiveTokens(
+        Set<String> activeTokens = concertCacheService.getConcertActiveTokens(
             expiredAt
         );
 
         if (!activeTokens.isEmpty()) {
-            concertCacheDeleteService.removeConcertActiveTokens(activeTokens);
-            concertCacheDeleteService.unlinkConcertTicketUsers(activeTokens);
+            concertCacheService.removeConcertActiveTokens(activeTokens);
+            concertCacheService.unlinkConcertTicketUsers(activeTokens);
         }
     }
 
@@ -90,21 +86,21 @@ public class ConcertScheduler {
         try {
             ConcertTicketingConfigDto concert = concertLocalCacheService.getExclusiveConcert(now.toLocalDate())
                 .orElseThrow(CommonNotFoundException::new);
-            Set<String> waitingTokens = concertCacheSearchService.getConcertWaitingTokenHeartbeats(
+            Set<String> waitingTokens = concertCacheService.getConcertWaitingTokenHeartbeats(
                 concert.id(),
                 waitingTokenExpiredAt
             );
             if (!waitingTokens.isEmpty()) {
-                concertCacheDeleteService.removeConcertWaitingTokens(concert.id(), waitingTokens);
-                concertCacheDeleteService.removeConcertWaitingTokenHeartbeats(concert.id(), waitingTokens);
+                concertCacheService.removeConcertWaitingTokens(concert.id(), waitingTokens);
+                concertCacheService.removeConcertWaitingTokenHeartbeats(concert.id(), waitingTokens);
             }
 
-            Set<String> activeTokens = concertCacheSearchService.getConcertActiveTokens(
+            Set<String> activeTokens = concertCacheService.getConcertActiveTokens(
                 concert.id(),
                 activeTokenExpiredAt
             );
             if (!activeTokens.isEmpty()) {
-                concertCacheDeleteService.removeConcertActiveTokens(concert.id(), activeTokens);
+                concertCacheService.removeConcertActiveTokens(concert.id(), activeTokens);
             }
         } catch (CommonNotFoundException e) {
         }
@@ -118,7 +114,7 @@ public class ConcertScheduler {
         try {
             ConcertTicketingConfigDto concert = concertLocalCacheService.getExclusiveConcert(now.toLocalDate())
                 .orElseThrow(CommonNotFoundException::new);
-            List<String> waitingTokens = concertCacheSearchService.getConcertWaitingTokens(
+            List<String> waitingTokens = concertCacheService.getConcertWaitingTokens(
                 concert.id(),
                 minScore,
                 maxScore,
@@ -128,20 +124,20 @@ public class ConcertScheduler {
                 return;
             }
 
-            concertCacheCreateService.addConcertActiveTokens(
+            concertCacheService.addConcertActiveTokens(
                 concert.id(),
                 localDateTimeToLong(now),
                 waitingTokens
             );
-            concertCacheDeleteService.removeConcertWaitingTokens(
+            concertCacheService.removeConcertWaitingTokens(
                 concert.id(),
                 waitingTokens
             );
 
             String lastToken = waitingTokens.get(waitingTokens.size() - 1);
-            concertCacheSearchService.getConcertTokenUser(lastToken)
+            concertCacheService.getConcertTokenUser(lastToken)
                 .ifPresent(concertTokenUser -> {
-                    concertCacheCreateService.setConcertLastWaitingCount(
+                    concertCacheService.setConcertLastWaitingCount(
                         concert.id(),
                         concertTokenUser.lastWaitingCount()
                     );
