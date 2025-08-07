@@ -1,0 +1,25 @@
+plugins {
+    id 'java-library'
+    id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
+}
+
+group = 'com.concertticketing'
+version = 'unspecified'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://packages.confluent.io/maven"
+    }
+}
+
+dependencies {
+    implementation 'io.confluent:kafka-avro-serializer:7.5.3'
+    implementation 'org.apache.avro:avro:1.12.0'
+}
