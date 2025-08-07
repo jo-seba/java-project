@@ -9,6 +9,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Qualifier("queueRedisTemplate")
-public @interface QueueRedis {
+@Qualifier("cacheRedisTemplate")
+public @interface CacheRedisTemplate {
 }

@@ -32,6 +32,7 @@ repositories {
 }
 
 dependencies {
+    implementation project(':common-error')
     implementation project(':common-utils')
 
     annotationProcessor 'org.projectlombok:lombok'

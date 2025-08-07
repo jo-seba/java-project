@@ -9,6 +9,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Qualifier("retainFirstPopRestScript")
-public @interface RetainFirstPopRestScript {
+@Qualifier("cacheRedisClient")
+public @interface CacheRedisClient {
 }

@@ -6,15 +6,12 @@ import static com.concertticketing.domainredis.common.constant.CacheRedisTTL.*;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.concertticketing.domainredis.common.annotation.CacheRedis;
-import com.concertticketing.domainredis.common.annotation.RedisObjectMapper;
-import com.concertticketing.domainredis.common.constant.CacheRedisKey;
+import com.concertticketing.domainredis.common.annotation.CacheRedisClient;
+import com.concertticketing.domainredis.common.redis.RedisClient;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTicketingCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTokenUserCache;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,101 +20,76 @@ import lombok.extern.slf4j.Slf4j;
 @Repository
 @RequiredArgsConstructor
 public class ConcertCacheRepository {
-    @CacheRedis
-    private final RedisTemplate<String, String> redisTemplate;
-    @RedisObjectMapper
-    private final ObjectMapper objectMapper;
+    @CacheRedisClient
+    private final RedisClient redisClient;
 
     public Optional<ConcertTicketingCache> getConcertTicketing(Long concertId) {
-        String result = redisTemplate.opsForValue().get(concertTicketingKey(concertId));
-        if (result == null) {
-            return Optional.empty();
-        }
-
-        try {
-            return Optional.ofNullable(objectMapper.readValue(result, ConcertTicketingCache.class));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return Optional.empty();
-        }
+        return redisClient.get(
+            concertTicketingKey(concertId),
+            ConcertTicketingCache.class
+        );
     }
 
     public void setConcertTicketing(Long concertId, ConcertTicketingCache concertTicketing) {
-        try {
-            redisTemplate.opsForValue().set(
-                concertTicketingKey(concertId),
-                objectMapper.writeValueAsString(concertTicketing),
-                CONCERT_TICKETING_TTL
-            );
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+        redisClient.set(
+            concertTicketingKey(concertId),
+            concertTicketing,
+            CONCERT_TICKETING_TTL
+        );
     }
 
     public Optional<ConcertTokenUserCache> getConcertTokenUser(String token) {
-        String result = redisTemplate.opsForValue().get(concertTokenUserKey(token));
-        if (result == null) {
-            return Optional.empty();
-        }
-
-        try {
-            return Optional.ofNullable(objectMapper.readValue(result, ConcertTokenUserCache.class));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return Optional.empty();
-        }
+        return redisClient.get(
+            concertTokenUserKey(token),
+            ConcertTokenUserCache.class
+        );
     }
 
     public void setConcertTokenUser(String token, ConcertTokenUserCache concertTokenUser) {
-        try {
-            redisTemplate.opsForValue().setIfAbsent(
-                concertTokenUserKey(token),
-                objectMapper.writeValueAsString(concertTokenUser),
-                CONCERT_TOKEN_USER_TTL
-            );
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+        redisClient.set(
+            concertTokenUserKey(token),
+            concertTokenUser,
+            CONCERT_TOKEN_USER_TTL
+        );
     }
 
-    public Boolean setConcertTokenUserNX(String token, ConcertTokenUserCache concertTokenUser) {
-        try {
-            return redisTemplate.opsForValue().setIfAbsent(
-                concertTokenUserKey(token),
-                objectMapper.writeValueAsString(concertTokenUser),
-                CONCERT_TOKEN_USER_TTL
-            );
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return Boolean.FALSE;
-        }
+    public boolean setConcertTokenUserNX(String token, ConcertTokenUserCache concertTokenUser) {
+        return redisClient.setIfNotExist(
+            concertTokenUserKey(token),
+            concertTokenUser,
+            CONCERT_TOKEN_USER_TTL
+        );
     }
 
     public Long unlinkConcertTokenUsers(Set<String> tokens) {
-        return redisTemplate.unlink(tokens.stream().map(CacheRedisKey::concertTokenUserKey).toList());
+        return redisClient.unlinkBulk(tokens);
     }
 
     public Long leftPushConcertOpaqueToken(String token) {
-        return redisTemplate.opsForList().leftPush(concertOpaqueTokensKey(), token);
+        return redisClient.leftPush(
+            concertOpaqueTokensKey(),
+            token
+        );
     }
 
     public Optional<String> leftPopConcertOpaqueToken() {
-        return Optional.ofNullable(redisTemplate.opsForList().leftPop(concertOpaqueTokensKey()));
+        return redisClient.leftPop(concertOpaqueTokensKey());
     }
 
     public Long incrConcertWaitingCount(Long concertId) {
-        return redisTemplate.opsForValue().increment(concertWaitingCountKey(concertId));
+        return redisClient.incr(concertWaitingCountKey(concertId));
     }
 
     public Long getConcertLastWaitingCount(Long concertId) {
-        String result = redisTemplate.opsForValue().get(concertWaitingCountLastKey(concertId));
-        if (result == null) {
-            return 0L;
-        }
-        return Long.parseLong(result);
+        return redisClient.get(
+            concertWaitingCountLastKey(concertId)
+        ).map(Long::parseLong).orElse(0L);
     }
 
     public void setConcertLastWaitingCount(Long concertId, Long count) {
-        redisTemplate.opsForValue().set(concertWaitingCountLastKey(concertId), count.toString());
+        redisClient.set(
+            concertWaitingCountLastKey(concertId),
+            count.toString()
+        );
     }
 }
