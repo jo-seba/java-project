@@ -1,5 +1,6 @@
 package com.concertticketing.userapi.apis.concerts.facade;
 
+import static com.concertticketing.commonkafka.KafkaTopic.*;
 import static com.concertticketing.commonutils.TimeUtils.*;
 
 import java.util.stream.Stream;
@@ -71,7 +72,8 @@ public class ConcertTicketingFacade {
 
         long createdAt = epochSeconds();
         if (concertTicketingCache.isQueueExclusive()) {
-            kafkaProducer.sendConcertUserJoinedExclusiveQueue(
+            kafkaProducer.send(
+                CONCERT_USER_JOINED_EXCLUSIVE_QUEUE,
                 new UserJoinedExclusiveQueueEvent(
                     userId,
                     concertId,
@@ -80,7 +82,8 @@ public class ConcertTicketingFacade {
                 )
             );
         } else {
-            kafkaProducer.sendConcertUserJoinedWaitingQueue(
+            kafkaProducer.send(
+                CONCERT_USER_JOINED_WAITING_QUEUE,
                 new UserJoinedWaitingQueueEvent(
                     userId,
                     concertId,

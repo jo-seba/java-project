@@ -24,9 +24,11 @@ spring:
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       acks: all
       retries: 5
-      batch-size: 100
+      batch-size: 16384
     properties:
+      value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
       linger.ms: 0
+      schema.registry.url: ${KAFKA_SCHEMA_REGISTRY_URL:http://localhost:8083}
 
 springdoc:
   default-consumes-media-type: application/json;charset=UTF-8

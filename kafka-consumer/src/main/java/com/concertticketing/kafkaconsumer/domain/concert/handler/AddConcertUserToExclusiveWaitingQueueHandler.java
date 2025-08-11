@@ -65,10 +65,13 @@ public class AddConcertUserToExclusiveWaitingQueueHandler
             event.getUserId(),
             event.getToken()
         ) > 1L) {
-            concertProducer.sendConcertExclusiveUserTokenExpired(new ExclusiveUserTokenExpiredEvent(
-                event.getUserId(),
-                event.getConcertId()
-            ));
+            concertProducer.send(
+                CONCERT_EXCLUSIVE_USER_TOKEN_EXPIRED,
+                new ExclusiveUserTokenExpiredEvent(
+                    event.getUserId(),
+                    event.getConcertId()
+                )
+            );
         }
     }
 }

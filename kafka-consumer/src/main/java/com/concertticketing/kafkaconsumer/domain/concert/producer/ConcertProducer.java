@@ -1,26 +1,28 @@
 package com.concertticketing.kafkaconsumer.domain.concert.producer;
 
-import static com.concertticketing.commonkafka.KafkaTopic.*;
+import java.util.concurrent.CompletableFuture;
 
+import org.apache.avro.specific.SpecificRecord;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 
-import com.concertticketing.commonavro.ExclusiveUserTokenExpiredEvent;
-import com.concertticketing.commonavro.UserTokenExpiredEvent;
-
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ConcertProducer {
-    private final KafkaTemplate<String, UserTokenExpiredEvent> userTokenExpiredKafkaTemplate;
-    private final KafkaTemplate<String, ExclusiveUserTokenExpiredEvent> exclusiveUserTokenExpiredKafkaTemplate;
+    private final KafkaTemplate<String, SpecificRecord> kafkaTemplate;
 
-    public void sendConcertUserTokenExpired(UserTokenExpiredEvent event) {
-        userTokenExpiredKafkaTemplate.send(CONCERT_USER_TOKEN_EXPIRED, event);
-    }
-
-    public void sendConcertExclusiveUserTokenExpired(ExclusiveUserTokenExpiredEvent event) {
-        exclusiveUserTokenExpiredKafkaTemplate.send(CONCERT_EXCLUSIVE_USER_TOKEN_EXPIRED, event);
+    public void send(String topic, SpecificRecord record) {
+        CompletableFuture<SendResult<String, SpecificRecord>> result = kafkaTemplate.send(topic, record);
+        result.whenComplete((sendResult, ex) -> {
+            if (ex != null) {
+                // Handle the exception
+                log.error("Failed to send message: " + ex.getMessage());
+            }
+        });
     }
 }

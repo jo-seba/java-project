@@ -62,10 +62,13 @@ public class AddConcertUserToActiveQueueHandler
             event.getUserId(),
             event.getToken()
         ) > 1L) {
-            concertProducer.sendConcertUserTokenExpired(new UserTokenExpiredEvent(
-                event.getUserId(),
-                event.getConcertId()
-            ));
+            concertProducer.send(
+                CONCERT_USER_TOKEN_EXPIRED,
+                new UserTokenExpiredEvent(
+                    event.getUserId(),
+                    event.getConcertId()
+                )
+            );
         }
 
         concertCacheService.setConcertTokenUser(

@@ -1,26 +1,28 @@
 package com.concertticketing.userapi.common.kafka;
 
-import static com.concertticketing.commonkafka.KafkaTopic.*;
+import java.util.concurrent.CompletableFuture;
 
+import org.apache.avro.specific.SpecificRecord;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 
-import com.concertticketing.commonavro.UserJoinedExclusiveQueueEvent;
-import com.concertticketing.commonavro.UserJoinedWaitingQueueEvent;
-
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class KafkaProducer {
-    private final KafkaTemplate<String, UserJoinedWaitingQueueEvent> userJoinedWaitingKafkaTemplate;
-    private final KafkaTemplate<String, UserJoinedExclusiveQueueEvent> userJoinedExclusiveKafkaTemplate;
+    private final KafkaTemplate<String, SpecificRecord> kafkaTemplate;
 
-    public void sendConcertUserJoinedWaitingQueue(UserJoinedWaitingQueueEvent event) {
-        userJoinedWaitingKafkaTemplate.send(CONCERT_USER_JOINED_WAITING_QUEUE, event);
-    }
-
-    public void sendConcertUserJoinedExclusiveQueue(UserJoinedExclusiveQueueEvent event) {
-        userJoinedExclusiveKafkaTemplate.send(CONCERT_USER_JOINED_EXCLUSIVE_QUEUE, event);
+    public void send(String topic, SpecificRecord record) {
+        CompletableFuture<SendResult<String, SpecificRecord>> result = kafkaTemplate.send(topic, record);
+        result.whenComplete((sendResult, ex) -> {
+            if (ex != null) {
+                // Handle the exception
+                log.error("Failed to send message: " + ex.getMessage());
+            }
+        });
     }
 }
