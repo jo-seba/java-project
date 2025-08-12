@@ -3,6 +3,7 @@ package com.concertticketing.domainredis.common.redis;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.concertticketing.commonerror.exception.common.CommonInternalServerException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +36,23 @@ public class RedisClient {
                     throw new CommonInternalServerException(e);
                 }
             });
+    }
+
+    public <T> List<T> getList(String key, Class<T> clazz) {
+        String value = redisTemplate.opsForValue().get(key);
+        if (value == null) {
+            return Collections.emptyList();
+        }
+
+        try {
+            TypeFactory typeFactory = objectMapper.getTypeFactory();
+            return objectMapper.readValue(
+                value,
+                typeFactory.constructCollectionType(List.class, clazz)
+            );
+        } catch (Exception e) {
+            throw new CommonInternalServerException(e);
+        }
     }
 
     public <T> void set(String key, T value) {

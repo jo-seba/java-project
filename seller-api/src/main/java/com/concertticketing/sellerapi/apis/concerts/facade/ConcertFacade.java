@@ -1,5 +1,7 @@
 package com.concertticketing.sellerapi.apis.concerts.facade;
 
+import static com.concertticketing.commonkafka.KafkaTopic.*;
+
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -7,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import com.concertticketing.commonavro.ConcertCreatedEvent;
 import com.concertticketing.sellerapi.apis.companies.service.CompanyService;
 import com.concertticketing.sellerapi.apis.concerts.domain.Concert;
 import com.concertticketing.sellerapi.apis.concerts.domain.ConcertConcertCategory;
@@ -24,12 +27,15 @@ import com.concertticketing.sellerapi.apis.concerts.service.ConcertService;
 import com.concertticketing.sellerapi.apis.venues.service.VenueLayoutService;
 import com.concertticketing.sellerapi.apis.venues.service.VenueService;
 import com.concertticketing.sellerapi.common.annotation.Facade;
+import com.concertticketing.sellerapi.common.kafka.KafkaProducer;
 
 import lombok.RequiredArgsConstructor;
 
 @Facade
 @RequiredArgsConstructor
 public class ConcertFacade {
+    private final KafkaProducer kafkaProducer;
+
     private final ConcertMapper concertMapper;
     private final ConcertDetailImageMapper concertDetailImageMapper;
     private final ConcertConcertCategoryMapper concertConcertCategoryMapper;
@@ -47,6 +53,7 @@ public class ConcertFacade {
     private final VenueLayoutService venueLayoutService;
 
     private final int LIST_PAGE_SIZE = 10;
+    private final int CONCERT_CREATED_EVENT_MAX_RETRY_COUNT = 5;
 
     @Transactional
     public AddConcertDto.AddConcertRes addConcert(Integer companyId, AddConcertDto.AddConcertBody body) {
@@ -70,6 +77,15 @@ public class ConcertFacade {
                 concertDetailImageMapper.toConcertDetailImageDtos(concert.getId(), body.detailImageUrls())
             );
         }
+
+        kafkaProducer.send(
+            CONCERT_CREATED,
+            new ConcertCreatedEvent(
+                concert.getId(),
+                0,
+                CONCERT_CREATED_EVENT_MAX_RETRY_COUNT
+            )
+        );
 
         return new AddConcertDto.AddConcertRes(concert.getId());
     }

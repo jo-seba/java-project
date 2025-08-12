@@ -16,7 +16,7 @@ public class ConcertListDto {
         @Min(1)
         int page
     ) {
-        public ConcertSort getConcertSortEnum() {
+        public ConcertSort getConcertSort() {
             return sort != null ? sort : ConcertSort.NEWEST;
         }
 

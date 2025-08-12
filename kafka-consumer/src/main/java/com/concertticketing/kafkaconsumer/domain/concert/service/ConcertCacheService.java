@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.concertticketing.domainredis.domain.concert.domain.ConcertListCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTokenUserCache;
 import com.concertticketing.domainredis.domain.concert.repository.ConcertCacheRepository;
 import com.concertticketing.domainredis.domain.concert.repository.ConcertQueueRepository;
+import com.concertticketing.kafkaconsumer.common.constant.ConcertSort;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +39,10 @@ public class ConcertCacheService {
 
     public void addConcertWaitingTokenHeartbeat(Long concertId, String token, long timestamp) {
         concertQueueRepository.addConcertWaitingTokenHeartbeat(concertId, token, timestamp);
+    }
+
+    public void setConcerts(ConcertSort sort, List<ConcertListCache> concerts) {
+        concertCacheRepository.setConcerts(sort.toString(), concerts);
     }
 
     // Read

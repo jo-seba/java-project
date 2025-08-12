@@ -3,6 +3,7 @@ package com.concertticketing.domainredis.domain.concert.repository;
 import static com.concertticketing.domainredis.common.constant.CacheRedisKey.*;
 import static com.concertticketing.domainredis.common.constant.CacheRedisTTL.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.concertticketing.domainredis.common.annotation.CacheRedisClient;
 import com.concertticketing.domainredis.common.redis.RedisClient;
+import com.concertticketing.domainredis.domain.concert.domain.ConcertListCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTicketingCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTokenUserCache;
 
@@ -91,5 +93,13 @@ public class ConcertCacheRepository {
             concertWaitingCountLastKey(concertId),
             count.toString()
         );
+    }
+
+    public void setConcerts(String sort, List<ConcertListCache> concerts) {
+        redisClient.set(concertListSortKey(sort), concerts);
+    }
+
+    public List<ConcertListCache> getConcerts(String sort) {
+        return redisClient.getList(concertListSortKey(sort), ConcertListCache.class);
     }
 }

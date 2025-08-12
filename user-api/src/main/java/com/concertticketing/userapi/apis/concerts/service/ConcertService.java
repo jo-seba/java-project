@@ -38,4 +38,8 @@ public class ConcertService {
         return concertRepository.findConcertTicketingInfo(concertId)
             .orElseThrow(CommonNotFoundException::new);
     }
+
+    public Long getConcertCount() {
+        return concertRepository.count();
+    }
 }

@@ -1,12 +1,15 @@
 package com.concertticketing.userapi.apis.concerts.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.concertticketing.domainredis.domain.concert.domain.ConcertListCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTicketingCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTokenUserCache;
 import com.concertticketing.domainredis.domain.concert.repository.ConcertCacheRepository;
+import com.concertticketing.userapi.apis.concerts.constant.ConcertSort;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +38,10 @@ public class ConcertCacheService {
 
     public Long getConcertLastWaitingCount(Long concertId) {
         return concertCacheRepository.getConcertLastWaitingCount(concertId);
+    }
+
+    public List<ConcertListCache> getConcerts(ConcertSort sort) {
+        return concertCacheRepository.getConcerts(sort.toString());
     }
 
     // Update

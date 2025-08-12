@@ -23,4 +23,8 @@ public final class CacheRedisKey {
     public static String concertWaitingCountLastKey(Long concertId) {
         return "concert:" + concertId + ":waiting-count:last";
     }
+
+    public static String concertListSortKey(String sort) {
+        return "concert:list:sort:" + sort;
+    }
 }

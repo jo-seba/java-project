@@ -1,0 +1,20 @@
+{
+  "name": "ConcertCreatedEvent",
+  "namespace": "com.concertticketing.commonavro",
+  "type": "record",
+  "fields": [
+    {
+      "name": "concertId",
+      "type": "long"
+    },
+    {
+      "name": "retryCount",
+      "type": "int"
+    },
+    {
+      "name": "maxRetryCount",
+      "type": "int"
+    }
+  ]
+}
+

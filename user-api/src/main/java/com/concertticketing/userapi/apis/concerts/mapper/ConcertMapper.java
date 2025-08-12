@@ -5,7 +5,9 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import com.concertticketing.domainredis.domain.concert.domain.ConcertListCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTicketingCache;
+import com.concertticketing.userapi.apis.concerts.dbdto.ConcertListItemDBDto;
 import com.concertticketing.userapi.apis.concerts.dbdto.ConcertTicketingInfoDBDto;
 import com.concertticketing.userapi.apis.concerts.domain.Concert;
 import com.concertticketing.userapi.apis.concerts.dto.ConcertDetailDto.ConcertDetailRes;
@@ -28,4 +30,8 @@ public interface ConcertMapper {
     ConcertDetailRes toConcertDetailDto(Concert concert, List<VenueArea> areas);
 
     ConcertTicketingCache toConcertTicketingCache(ConcertTicketingInfoDBDto concert);
+
+    ConcertListItemDBDto toConcertListItemDBDto(ConcertListCache concert);
+
+    List<ConcertListItemDBDto> toConcertListItemDBDtos(List<ConcertListCache> concerts);
 }
