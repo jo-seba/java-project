@@ -100,6 +100,19 @@ VALUES (1, 1, 1, '아이유 전국투어 - 서울', 200, '2026-06-01 18:00:00', 
 INSERT INTO `concert_ticketing_config` (`id`, `capacity`, `started_at`, `ended_at`)
 VALUES (1, 100, '2025-05-01 10:00:00', '2026-06-01 00:00:00');
 
+INSERT INTO `concert_schedule` (`id`, `concert_id`, `concert_date`, `started_at`, `ended_at`)
+VALUES (1, 1, '2026-05-01 18:00:00', '2026-05-01 18:00:00', '2026-05-01 21:00:00');
+
+INSERT INTO `concert_seat` (`id`, `concert_id`, `schedule_id`, `area_id`, `seat_row`, `seat_column`, `status`,
+                            `hold_user_id`,
+                            `hold_expired_at`)
+VALUES (1, 1, 1, 1, 1, 1, 0, NULL, NULL),
+       (2, 1, 1, 1, 1, 2, 0, NULL, NULL),
+       (3, 1, 1, 1, 1, 3, 0, NULL, NULL),
+       (4, 1, 1, 1, 2, 1, 0, NULL, NULL),
+       (5, 1, 1, 1, 2, 2, 0, NULL, NULL),
+       (6, 1, 1, 1, 2, 3, 0, NULL, NULL);
+
 INSERT INTO `concert_category` (name)
 VALUES ('발라드'),
        ('힙합'),

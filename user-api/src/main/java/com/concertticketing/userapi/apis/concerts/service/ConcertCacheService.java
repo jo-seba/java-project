@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.concertticketing.domainredis.domain.concert.domain.ConcertListCache;
+import com.concertticketing.domainredis.domain.concert.domain.ConcertSeatReservationCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTicketingCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTokenUserCache;
 import com.concertticketing.domainredis.domain.concert.repository.ConcertCacheRepository;
@@ -25,6 +26,20 @@ public class ConcertCacheService {
 
     public Boolean setConcertTokenUserNX(String token, ConcertTokenUserCache concertTokenUser) {
         return concertCacheRepository.setConcertTokenUserNX(token, concertTokenUser);
+    }
+
+    public void setConcertSeatReservation(
+        Long concertId,
+        Long userId,
+        Long scheduleId,
+        ConcertSeatReservationCache value
+    ) {
+        concertCacheRepository.setConcertSeatReservation(
+            concertId,
+            userId,
+            scheduleId,
+            value
+        );
     }
 
     // Read

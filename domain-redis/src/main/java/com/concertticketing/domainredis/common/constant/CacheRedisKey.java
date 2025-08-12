@@ -27,4 +27,12 @@ public final class CacheRedisKey {
     public static String concertListSortKey(String sort) {
         return "concert:list:sort:" + sort;
     }
+
+    public static String concertUserScheduleKey(Long concertId, Long userId, Long scheduleId) {
+        return "concert:" + concertId + ":user:" + userId + ":schedule:" + scheduleId;
+    }
+
+    public static String concertPaymentEventStateKey(String eventId) {
+        return "concert:payment-event:" + eventId + ":state";
+    }
 }

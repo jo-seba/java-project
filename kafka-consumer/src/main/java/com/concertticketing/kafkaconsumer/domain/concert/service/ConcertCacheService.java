@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.concertticketing.domainredis.common.constant.ConcertPaymentEventStatus;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertListCache;
+import com.concertticketing.domainredis.domain.concert.domain.ConcertSeatReservationCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTokenUserCache;
 import com.concertticketing.domainredis.domain.concert.repository.ConcertCacheRepository;
 import com.concertticketing.domainredis.domain.concert.repository.ConcertQueueRepository;
@@ -50,7 +52,18 @@ public class ConcertCacheService {
         return concertCacheRepository.getConcertTokenUser(token);
     }
 
+    public Optional<ConcertSeatReservationCache> getConcertSeatReservation(
+        Long concertId,
+        Long userId,
+        Long scheduleId
+    ) {
+        return concertCacheRepository.getConcertSeatReservation(concertId, userId, scheduleId);
+    }
+
     // Update
+    public boolean setConcertPaymentEventStatus(String eventId, ConcertPaymentEventStatus status) {
+        return concertCacheRepository.setConcertPaymentEventStatus(eventId, status);
+    }
 
     // Delete
     public Long removeConcertActiveTokens(List<String> tokens) {

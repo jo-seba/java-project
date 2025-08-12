@@ -30,7 +30,7 @@ public class SecurityConfig {
         OpaqueTokenAuthenticationFilter opaqueTokenAuthenticationFilter
     ) throws Exception {
         return http
-            .securityMatcher(OPAQUE_PATH)
+            .securityMatcher(OPAQUE_PATHS)
             .csrf(AbstractHttpConfigurer::disable)
             .logout(AbstractHttpConfigurer::disable)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

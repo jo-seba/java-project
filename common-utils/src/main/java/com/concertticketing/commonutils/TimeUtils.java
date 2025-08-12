@@ -27,4 +27,8 @@ public final class TimeUtils {
     public static LocalDateTime toLocalDateTime(long epochSeconds) {
         return Instant.ofEpochSecond(epochSeconds).atZone(DEFAULT_ZONE).toLocalDateTime();
     }
+
+    public static LocalDateTime now() {
+        return LocalDateTime.now(DEFAULT_ZONE);
+    }
 }

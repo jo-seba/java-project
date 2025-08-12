@@ -7,6 +7,9 @@ public class ConsumerGroupID {
     public static final String ADD_EXCLUSIVE_CONCERT_TOKEN_TO_HEARTBEAT = "add-exclusive-concert-token-to-heartbeat";
     public static final String CONCERT_DETAIL_VIEW_COUNT = "concert-detail-view-count";
 
+    public static final String CONCERT_SEAT_RESERVATION = "concert-seat-reservation";
+    public static final String CONCERT_SEAT_RESERVATION_DLQ_REQUEST = "concert-seat-reservation-dlq-request";
+
     public static final String REMOVE_CONCERT_OLD_TOKENS = "remove-concert-old-tokens";
     public static final String REMOVE_CONCERT_OLD_EXCLUSIVE_TOKENS = "remove-concert-old-exclusive-tokens";
 }

@@ -176,16 +176,19 @@ CREATE TABLE `concert_schedule` (
 DROP TABLE IF EXISTS concert_seat;
 CREATE TABLE `concert_seat` (
     `id`        	    bigint	    NOT NULL    auto_increment  PRIMARY KEY,
+    `concert_id`        bigint	    NOT NULL,
     `schedule_id`       bigint	    NOT NULL,
     `area_id`	        bigint	    NOT NULL,
     `seat_row`	        smallint    NOT NULL,
-    `seat_col`	        smallint	NOT NULL,
+    `seat_column`	    smallint	NOT NULL,
     `status`    	    tinyint	    NOT NULL    DEFAULT 0   COMMENT "0: available, 1: hold, 2: sold",
     `hold_user_id`  	bigint	    NULL,
     `hold_expired_at`	timestamp	NULL,
+    FOREIGN KEY (concert_id) REFERENCES concert(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (schedule_id) REFERENCES concert_schedule(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (area_id) REFERENCES venue_area(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (hold_user_id) REFERENCES user(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    UNIQUE (schedule_id, area_id, seat_row, seat_col)
+    UNIQUE (schedule_id, area_id, seat_row, seat_column)
 );
 
 DROP TABLE IF EXISTS concert_order;

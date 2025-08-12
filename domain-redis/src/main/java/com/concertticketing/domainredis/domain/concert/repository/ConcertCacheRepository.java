@@ -10,8 +10,10 @@ import java.util.Set;
 import org.springframework.stereotype.Repository;
 
 import com.concertticketing.domainredis.common.annotation.CacheRedisClient;
+import com.concertticketing.domainredis.common.constant.ConcertPaymentEventStatus;
 import com.concertticketing.domainredis.common.redis.RedisClient;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertListCache;
+import com.concertticketing.domainredis.domain.concert.domain.ConcertSeatReservationCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTicketingCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTokenUserCache;
 
@@ -101,5 +103,37 @@ public class ConcertCacheRepository {
 
     public List<ConcertListCache> getConcerts(String sort) {
         return redisClient.getList(concertListSortKey(sort), ConcertListCache.class);
+    }
+
+    public void setConcertSeatReservation(
+        Long concertId,
+        Long userId,
+        Long scheduleId,
+        ConcertSeatReservationCache value
+    ) {
+        redisClient.set(
+            concertUserScheduleKey(concertId, userId, scheduleId),
+            value,
+            CONCERT_TOKEN_USER_TTL
+        );
+    }
+
+    public Optional<ConcertSeatReservationCache> getConcertSeatReservation(
+        Long concertId,
+        Long userId,
+        Long scheduleId
+    ) {
+        return redisClient.get(
+            concertUserScheduleKey(concertId, userId, scheduleId),
+            ConcertSeatReservationCache.class
+        );
+    }
+
+    public boolean setConcertPaymentEventStatus(String eventId, ConcertPaymentEventStatus status) {
+        return redisClient.setIfNotExist(
+            concertPaymentEventStateKey(eventId),
+            status,
+            CONCERT_PAYMENT_EVENT_STATE_TTL
+        );
     }
 }
