@@ -72,7 +72,7 @@ public class ConcertTicketingFacade {
 
         long createdAt = epochSeconds();
         if (concertTicketingCache.isQueueExclusive()) {
-            kafkaProducer.send(
+            kafkaProducer.sendLowLatency(
                 CONCERT_USER_JOINED_EXCLUSIVE_QUEUE,
                 new UserJoinedExclusiveQueueEvent(
                     userId,
@@ -82,7 +82,7 @@ public class ConcertTicketingFacade {
                 )
             );
         } else {
-            kafkaProducer.send(
+            kafkaProducer.sendLowLatency(
                 CONCERT_USER_JOINED_WAITING_QUEUE,
                 new UserJoinedWaitingQueueEvent(
                     userId,

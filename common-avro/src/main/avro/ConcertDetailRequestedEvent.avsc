@@ -1,0 +1,20 @@
+{
+  "name": "ConcertDetailRequestedEvent",
+  "namespace": "com.concertticketing.commonavro",
+  "type": "record",
+  "fields": [
+    {
+      "name": "concertId",
+      "type": "long"
+    },
+    {
+      "name": "userId",
+      "type": "long"
+    },
+    {
+      "name": "viewedAt",
+      "type": "long"
+    }
+  ]
+}
+

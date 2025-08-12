@@ -23,6 +23,15 @@ redis:
     host: ${REDIS_QUEUE_HOST}
     port: ${REDIS_QUEUE_PORT}
 
+kafka:
+  producer:
+    default-option:
+      linger-ms: ${KAFKA_PRODUCER_DEFAULT_LINGER_MS:300}
+      batch-size: ${KAFKA_PRODUCER_DEFAULT_BATCH_SIZE:65536}
+    low-latency:
+      linger-ms: ${KAFKA_PRODUCER_LOW_LATENCY_LINGER_MS:0}
+      batch-size: ${KAFKA_PRODUCER_LOW_LATENCY_BATCH_SIZE:16384}
+
 logging.level:
   org.hibernate.SQL: info
   org.hibernate.orm.jdbc.bind: info

@@ -23,6 +23,15 @@ redis:
     host: ${REDIS_QUEUE_HOST:localhost}
     port: ${REDIS_QUEUE_PORT:6381}
 
+kafka:
+  producer:
+    default-option:
+      linger-ms: 3000
+      batch-size: 65536
+    low-latency:
+      linger-ms: 0
+      batch-size: 16384
+
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.orm.jdbc.bind: trace

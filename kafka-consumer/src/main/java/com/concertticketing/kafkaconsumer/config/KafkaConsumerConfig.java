@@ -29,6 +29,15 @@ public class KafkaConsumerConfig {
         );
     }
 
+    @Bean(name = BATCH_AUTO_ACK_CONSUMER_FACTORY)
+    public ConcurrentKafkaListenerContainerFactory<String, SpecificRecord> batchAutoAckConsumerFactory() {
+        return defaultKafkaListenerContainerFactory(
+            true,
+            ContainerProperties.AckMode.BATCH,
+            true
+        );
+    }
+
     private ConcurrentKafkaListenerContainerFactory<String, SpecificRecord> defaultKafkaListenerContainerFactory(
         boolean autoCommitEnabled,
         ContainerProperties.AckMode ackMode,

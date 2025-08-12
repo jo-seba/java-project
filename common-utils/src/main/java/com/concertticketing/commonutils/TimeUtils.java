@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public final class TimeUtils {
-    public static final ZoneId DEFAULT_ZONE = ZoneId.of("Asia/Seoul");
+    public static final ZoneId DEFAULT_ZONE = ZoneId.of("UTC");
 
     public static long epochSeconds() {
         return Instant.now().getEpochSecond();
@@ -22,5 +22,9 @@ public final class TimeUtils {
 
     public static LocalDateTime instantToLocalDateTime(Instant instant) {
         return instant.atZone(DEFAULT_ZONE).toLocalDateTime();
+    }
+
+    public static LocalDateTime toLocalDateTime(long epochSeconds) {
+        return Instant.ofEpochSecond(epochSeconds).atZone(DEFAULT_ZONE).toLocalDateTime();
     }
 }

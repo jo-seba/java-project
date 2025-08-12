@@ -3,6 +3,7 @@ package com.concertticketing.userapi.apis.concerts.controller;
 import static io.swagger.v3.oas.annotations.enums.ParameterIn.*;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -53,7 +54,10 @@ public class ConcertController {
         @ApiResponse(responseCode = "404", description = "not found")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<ConcertDetailRes> getConcert(@PathVariable @Min(1) Long id) {
-        return ResponseEntity.ok(concertFacade.getConcert(id));
+    public ResponseEntity<ConcertDetailRes> getConcert(
+        @AuthenticationPrincipal Long userId,
+        @PathVariable @Min(1) Long id
+    ) {
+        return ResponseEntity.ok(concertFacade.getConcert(id, userId));
     }
 }

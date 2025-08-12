@@ -1,5 +1,7 @@
 package com.concertticketing.userapi.apis.concerts.facade;
 
+import static com.concertticketing.commonkafka.KafkaTopic.*;
+
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -7,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import com.concertticketing.commonavro.ConcertDetailRequestedEvent;
+import com.concertticketing.commonutils.TimeUtils;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertListCache;
 import com.concertticketing.userapi.apis.concerts.dbdto.ConcertListItemDBDto;
 import com.concertticketing.userapi.apis.concerts.domain.Concert;
@@ -18,12 +22,15 @@ import com.concertticketing.userapi.apis.concerts.service.ConcertService;
 import com.concertticketing.userapi.apis.venues.domain.VenueArea;
 import com.concertticketing.userapi.apis.venues.service.VenueAreaService;
 import com.concertticketing.userapi.common.annotation.Facade;
+import com.concertticketing.userapi.common.kafka.KafkaProducer;
 
 import lombok.RequiredArgsConstructor;
 
 @Facade
 @RequiredArgsConstructor
 public class ConcertFacade {
+    private final KafkaProducer kafkaProducer;
+
     private final ConcertMapper concertMapper;
 
     private final ConcertService concertService;
@@ -32,12 +39,21 @@ public class ConcertFacade {
 
     private final VenueAreaService venueAreaService;
 
-    private static final int LIST_PAGE_SIZE = 10;
+    private final int LIST_PAGE_SIZE = 10;
 
     @Transactional(readOnly = true)
-    public ConcertDetailDto.ConcertDetailRes getConcert(Long id) {
-        Concert detailConcert = concertService.findConcert(id);
+    public ConcertDetailDto.ConcertDetailRes getConcert(Long concertId, Long userId) {
+        Concert detailConcert = concertService.findConcert(concertId);
         List<VenueArea> areas = venueAreaService.findAreas(detailConcert.getVenueLayout().getId());
+
+        kafkaProducer.send(
+            CONCERT_DETAIL_REQUESTED_EVENT,
+            new ConcertDetailRequestedEvent(
+                concertId,
+                userId,
+                TimeUtils.epochSeconds()
+            )
+        );
 
         return concertMapper.toConcertDetailDto(detailConcert, areas);
     }
