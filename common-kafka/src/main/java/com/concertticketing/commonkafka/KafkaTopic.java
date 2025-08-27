@@ -13,4 +13,5 @@ public final class KafkaTopic {
 
     public static final String CONCERT_SEAT_RESERVATION_REQUESTED = "concert-seat-reservation-requested";
     public static final String CONCERT_SEAT_RESERVATION_DLQ = "concert-seat-reservation-dlq";
+    public static final String CONCERT_REFUND = "concert-refund";
 }

@@ -18,6 +18,10 @@ public record ConcertSeatReservationCache(
         return status == ConcertSeatReservationStatus.ONGOING;
     }
 
+    public boolean canRefund() {
+        return status == ConcertSeatReservationStatus.SUCCESS;
+    }
+
     public boolean isWaiting() {
         return status == ConcertSeatReservationStatus.WAITING;
     }

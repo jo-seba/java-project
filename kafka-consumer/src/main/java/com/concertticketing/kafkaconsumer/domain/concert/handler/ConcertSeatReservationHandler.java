@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ConcertSeatReservationDLQHandler
+public class ConcertSeatReservationHandler
     extends ConsumerManualHandler<ConcertSeatReservationRequestedEvent> {
     private final ConcertCacheService concertCacheService;
 

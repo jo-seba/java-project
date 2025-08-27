@@ -9,6 +9,7 @@ public class ConsumerGroupID {
 
     public static final String CONCERT_SEAT_RESERVATION = "concert-seat-reservation";
     public static final String CONCERT_SEAT_RESERVATION_DLQ_REQUEST = "concert-seat-reservation-dlq-request";
+    public static final String CONCERT_REFUND_RETRY = "concert-refund-retry";
 
     public static final String REMOVE_CONCERT_OLD_TOKENS = "remove-concert-old-tokens";
     public static final String REMOVE_CONCERT_OLD_EXCLUSIVE_TOKENS = "remove-concert-old-exclusive-tokens";

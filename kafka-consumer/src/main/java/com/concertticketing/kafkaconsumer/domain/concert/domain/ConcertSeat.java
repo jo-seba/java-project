@@ -37,5 +37,9 @@ public class ConcertSeat {
     public boolean isOngoing() {
         return status == SeatStatus.ONGOING;
     }
+
+    public boolean isSold() {
+        return status == SeatStatus.SOLD;
+    }
 }
 
