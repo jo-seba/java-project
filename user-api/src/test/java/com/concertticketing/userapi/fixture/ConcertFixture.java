@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.concertticketing.userapi.apis.concerts.domain.Concert;
-import com.concertticketing.userapi.apis.concerts.dto.ConcertListDto;
+import com.concertticketing.userapi.apis.concerts.dto.ConcertsDto;
 
 public final class ConcertFixture {
     private static final int DEFAULT_DAY_RANGE = 30;
@@ -38,8 +38,8 @@ public final class ConcertFixture {
         );
     }
 
-    public static List<ConcertListDto.ConcertListItem> newConcertListItems(int length) {
-        List<ConcertListDto.ConcertListItem> results = new ArrayList<>();
+    public static List<ConcertsDto.ConcertListItem> newConcertListItems(int length) {
+        List<ConcertsDto.ConcertListItem> results = new ArrayList<>();
         for (int i = 1; i <= length; i++) {
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime startedAt = newStartedAt(now);
@@ -83,10 +83,10 @@ public final class ConcertFixture {
         return randomDateTimeBetween(bookingStartedAt.plusWeeks(1), endedAt.minusHours(2));
     }
 
-    private static ConcertListDto.ConcertListItem newConcertListItem(Long id) {
+    private static ConcertsDto.ConcertListItem newConcertListItem(Long id) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime startedAt = newStartedAt(now);
-        return new ConcertListDto.ConcertListItem(
+        return new ConcertsDto.ConcertListItem(
             id,
             randomText("title"),
             randomText("venue name"),

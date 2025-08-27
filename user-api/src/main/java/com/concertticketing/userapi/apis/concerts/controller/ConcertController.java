@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.concertticketing.userapi.apis.concerts.dto.ConcertDetailDto.ConcertDetailRes;
-import com.concertticketing.userapi.apis.concerts.dto.ConcertListDto;
-import com.concertticketing.userapi.apis.concerts.dto.ConcertListDto.ConcertListRes;
+import com.concertticketing.userapi.apis.concerts.dto.ConcertsDto;
+import com.concertticketing.userapi.apis.concerts.dto.ConcertsDto.ConcertListRes;
 import com.concertticketing.userapi.apis.concerts.facade.ConcertFacade;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,7 +42,7 @@ public class ConcertController {
     })
     @GetMapping
     public ResponseEntity<ConcertListRes> getConcerts(
-        @ModelAttribute @Validated ConcertListDto.ConcertListQuery query
+        @ModelAttribute @Validated ConcertsDto.ConcertListQuery query
     ) {
         return ResponseEntity.ok(concertFacade.getConcerts(query));
     }

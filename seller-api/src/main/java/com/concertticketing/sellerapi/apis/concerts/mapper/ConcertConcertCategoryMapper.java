@@ -9,8 +9,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.util.CollectionUtils;
 
-import com.concertticketing.sellerapi.apis.concerts.dbdto.ConcertConcertCategoryDBDto;
-import com.concertticketing.sellerapi.apis.concerts.domain.ConcertConcertCategory;
+import com.concertticketing.domainrdb.domain.concert.domain.ConcertConcertCategory;
+import com.concertticketing.domainrdb.domain.concert.dto.ConcertConcertCategoryDto;
 import com.concertticketing.sellerapi.apis.concerts.dto.ConcertCategoryDto;
 import com.concertticketing.sellerapi.common.mapstruct.MapStructBaseConfig;
 
@@ -18,12 +18,12 @@ import com.concertticketing.sellerapi.common.mapstruct.MapStructBaseConfig;
     config = MapStructBaseConfig.class
 )
 public interface ConcertConcertCategoryMapper {
-    ConcertConcertCategoryDBDto toConcertConcertCategoryDto(Long concertId, Integer categoryId);
+    ConcertConcertCategoryDto toConcertConcertCategoryDto(Long concertId, Integer categoryId);
 
     @Mapping(target = ".", source = "concertConcertCategory.category")
     ConcertCategoryDto toConcertCategoryDto(ConcertConcertCategory concertConcertCategory);
 
-    default List<ConcertConcertCategoryDBDto> toConcertConcertCategoryDtos(Long concertId, List<Integer> categoryIds) {
+    default List<ConcertConcertCategoryDto> toConcertConcertCategoryDtos(Long concertId, List<Integer> categoryIds) {
         if (CollectionUtils.isEmpty(categoryIds)) {
             return new ArrayList<>();
         }

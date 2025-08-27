@@ -1,6 +1,6 @@
 package com.concertticketing.sellerapi.apis.companies.dto;
 
-import com.concertticketing.sellerapi.apis.sellers.constant.SellerRole;
+import com.concertticketing.domainrdb.domain.seller.enums.SellerRole;
 import com.concertticketing.sellerapi.common.validation.PhoneNumber;
 
 import io.swagger.v3.oas.annotations.media.Schema;

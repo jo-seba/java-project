@@ -5,12 +5,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.concertticketing.domainrdb.domain.concert.enums.ConcertSort;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertListCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertSeatReservationCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTicketingCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTokenUserCache;
 import com.concertticketing.domainredis.domain.concert.repository.ConcertCacheRepository;
-import com.concertticketing.userapi.apis.concerts.constant.ConcertSort;
 
 import lombok.RequiredArgsConstructor;
 

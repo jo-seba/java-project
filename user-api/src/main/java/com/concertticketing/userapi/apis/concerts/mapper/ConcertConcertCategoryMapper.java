@@ -7,8 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 import org.springframework.util.CollectionUtils;
 
-import com.concertticketing.userapi.apis.concerts.domain.ConcertCategory;
-import com.concertticketing.userapi.apis.concerts.domain.ConcertConcertCategory;
+import com.concertticketing.domainrdb.domain.concert.domain.ConcertCategory;
+import com.concertticketing.domainrdb.domain.concert.domain.ConcertConcertCategory;
 import com.concertticketing.userapi.common.mapstruct.MapStructBaseConfig;
 
 @Mapper(

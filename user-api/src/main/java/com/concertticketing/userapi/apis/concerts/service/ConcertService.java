@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.concertticketing.commonerror.exception.common.CommonNotFoundException;
-import com.concertticketing.userapi.apis.concerts.constant.ConcertSort;
-import com.concertticketing.userapi.apis.concerts.dbdto.ConcertListItemDBDto;
-import com.concertticketing.userapi.apis.concerts.dbdto.ConcertTicketingInfoDBDto;
-import com.concertticketing.userapi.apis.concerts.domain.Concert;
-import com.concertticketing.userapi.apis.concerts.repository.ConcertRepository;
+import com.concertticketing.domainrdb.domain.concert.domain.Concert;
+import com.concertticketing.domainrdb.domain.concert.dto.ConcertListDto;
+import com.concertticketing.domainrdb.domain.concert.dto.ConcertTicketingInfoDto;
+import com.concertticketing.domainrdb.domain.concert.enums.ConcertSort;
+import com.concertticketing.domainrdb.domain.concert.repository.ConcertRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,11 +30,11 @@ public class ConcertService {
             .orElseThrow(CommonNotFoundException::new);
     }
 
-    public Page<ConcertListItemDBDto> findConcerts(ConcertSort sort, Pageable pageable) {
+    public Page<ConcertListDto> findConcerts(ConcertSort sort, Pageable pageable) {
         return concertRepository.findConcerts(sort, pageable);
     }
 
-    public ConcertTicketingInfoDBDto findConcertTicketingInfo(Long concertId) {
+    public ConcertTicketingInfoDto findConcertTicketingInfo(Long concertId) {
         return concertRepository.findConcertTicketingInfo(concertId)
             .orElseThrow(CommonNotFoundException::new);
     }

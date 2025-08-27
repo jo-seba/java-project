@@ -22,7 +22,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.concertticketing.userapi.apis.concerts.constant.ConcertSort;
 import com.concertticketing.userapi.apis.concerts.domain.Concert;
-import com.concertticketing.userapi.apis.concerts.dto.ConcertListDto;
+import com.concertticketing.userapi.apis.concerts.dto.ConcertsDto;
 import com.concertticketing.userapi.apis.concerts.exception.ConcertErrorCode;
 import com.concertticketing.userapi.apis.concerts.exception.ConcertErrorException;
 import com.concertticketing.userapi.apis.concerts.repository.ConcertRepository;
@@ -86,13 +86,13 @@ class ConcertSearchServiceTest {
             void getConcerts() {
                 int size = 10;
                 Pageable pageable = PageRequest.of(0, size);
-                List<ConcertListDto.ConcertListItem> items = newConcertListItems(10);
-                Page<ConcertListDto.ConcertListItem> mockPageConcerts = new PageImpl<>(items, pageable, items.size());
+                List<ConcertsDto.ConcertListItem> items = newConcertListItems(10);
+                Page<ConcertsDto.ConcertListItem> mockPageConcerts = new PageImpl<>(items, pageable, items.size());
 
                 given(concertRepository.findConcerts(ConcertSort.NEWEST, pageable))
                     .willReturn(mockPageConcerts);
 
-                Page<ConcertListDto.ConcertListItem> result = concertSearchService.findConcerts(ConcertSort.NEWEST,
+                Page<ConcertsDto.ConcertListItem> result = concertSearchService.findConcerts(ConcertSort.NEWEST,
                     pageable);
 
                 assertThat(result).isNotNull();

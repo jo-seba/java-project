@@ -7,7 +7,7 @@ import java.time.Duration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.concertticketing.userapi.apis.concerts.repository.ConcertSeatRepository;
+import com.concertticketing.domainrdb.domain.concert.repository.ConcertSeatRepository;
 
 import lombok.RequiredArgsConstructor;
 

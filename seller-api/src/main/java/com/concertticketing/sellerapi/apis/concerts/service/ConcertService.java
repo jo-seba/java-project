@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.concertticketing.commonerror.exception.common.CommonNotFoundException;
-import com.concertticketing.sellerapi.apis.concerts.domain.Concert;
-import com.concertticketing.sellerapi.apis.concerts.repository.ConcertRepository;
+import com.concertticketing.domainrdb.domain.concert.domain.Concert;
+import com.concertticketing.domainrdb.domain.concert.repository.ConcertRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,8 +24,8 @@ public class ConcertService {
 
     // Read
     @Transactional(readOnly = true)
-    public Concert findConcertWithVenueAndVenueLayoutAndCategories(Long concertId, Integer companyId) {
-        return concertRepository.findConcertWithVenueAndVenueLayoutAndCategories(concertId, companyId)
+    public Concert findConcert(Long concertId, Integer companyId) {
+        return concertRepository.findConcert(concertId, companyId)
             .orElseThrow(CommonNotFoundException::new);
     }
 

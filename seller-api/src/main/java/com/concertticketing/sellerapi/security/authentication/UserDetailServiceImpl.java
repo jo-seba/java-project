@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.concertticketing.commonerror.exception.common.CommonNotFoundException;
-import com.concertticketing.sellerapi.apis.sellers.domain.Seller;
+import com.concertticketing.domainrdb.domain.seller.domain.Seller;
+import com.concertticketing.domainrdb.domain.seller.repository.SellerRepository;
 import com.concertticketing.sellerapi.apis.sellers.mapper.SellerMapper;
-import com.concertticketing.sellerapi.apis.sellers.repository.SellerRepository;
 
 import lombok.RequiredArgsConstructor;
 

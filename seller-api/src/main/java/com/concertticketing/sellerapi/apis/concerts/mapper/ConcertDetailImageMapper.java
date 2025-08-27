@@ -7,15 +7,15 @@ import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
 import org.springframework.util.CollectionUtils;
 
-import com.concertticketing.sellerapi.apis.concerts.dbdto.ConcertDetailImageDBDto;
-import com.concertticketing.sellerapi.apis.concerts.domain.ConcertDetailImage;
+import com.concertticketing.domainrdb.domain.concert.domain.ConcertDetailImage;
+import com.concertticketing.domainrdb.domain.concert.dto.ConcertDetailImageDto;
 import com.concertticketing.sellerapi.common.mapstruct.MapStructBaseConfig;
 
 @Mapper(config = MapStructBaseConfig.class)
 public interface ConcertDetailImageMapper {
-    ConcertDetailImageDBDto toConcertDetailImageDto(Long concertId, String imageUrl);
+    ConcertDetailImageDto toConcertDetailImageDto(Long concertId, String imageUrl);
 
-    default List<ConcertDetailImageDBDto> toConcertDetailImageDtos(Long concertId, List<String> imageUrls) {
+    default List<ConcertDetailImageDto> toConcertDetailImageDtos(Long concertId, List<String> imageUrls) {
         if (CollectionUtils.isEmpty(imageUrls)) {
             return new ArrayList<>();
         }

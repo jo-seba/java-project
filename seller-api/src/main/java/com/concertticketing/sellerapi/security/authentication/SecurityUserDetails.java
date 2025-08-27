@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.concertticketing.sellerapi.apis.sellers.constant.SellerRole;
+import com.concertticketing.domainrdb.domain.seller.enums.SellerRole;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

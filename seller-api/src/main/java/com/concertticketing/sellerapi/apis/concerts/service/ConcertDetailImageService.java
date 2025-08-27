@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.concertticketing.sellerapi.apis.concerts.dbdto.ConcertDetailImageDBDto;
-import com.concertticketing.sellerapi.apis.concerts.repository.ConcertDetailImageJdbcRepository;
-import com.concertticketing.sellerapi.apis.concerts.repository.ConcertDetailImageRepository;
+import com.concertticketing.domainrdb.domain.concert.dto.ConcertDetailImageDto;
+import com.concertticketing.domainrdb.domain.concert.repository.ConcertDetailImageJdbcRepository;
+import com.concertticketing.domainrdb.domain.concert.repository.ConcertDetailImageRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +20,7 @@ public class ConcertDetailImageService {
 
     // Create
     @Transactional
-    public void bulkInsertConcertDetailImages(List<ConcertDetailImageDBDto> dtos) {
+    public void bulkInsertConcertDetailImages(List<ConcertDetailImageDto> dtos) {
         concertDetailImageJdbcRepository.bulkInsert(dtos);
     }
 

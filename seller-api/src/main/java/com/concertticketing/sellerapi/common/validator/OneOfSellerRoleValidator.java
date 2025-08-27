@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.concertticketing.sellerapi.apis.sellers.constant.SellerRole;
+import com.concertticketing.domainrdb.domain.seller.enums.SellerRole;
 import com.concertticketing.sellerapi.common.validation.OneOfSellerRole;
 
 import jakarta.validation.ConstraintValidator;

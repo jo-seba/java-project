@@ -5,13 +5,13 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import com.concertticketing.domainrdb.domain.concert.domain.Concert;
+import com.concertticketing.domainrdb.domain.concert.dto.ConcertListDto;
+import com.concertticketing.domainrdb.domain.concert.dto.ConcertTicketingInfoDto;
+import com.concertticketing.domainrdb.domain.venue.domain.VenueArea;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertListCache;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertTicketingCache;
-import com.concertticketing.userapi.apis.concerts.dbdto.ConcertListItemDBDto;
-import com.concertticketing.userapi.apis.concerts.dbdto.ConcertTicketingInfoDBDto;
-import com.concertticketing.userapi.apis.concerts.domain.Concert;
 import com.concertticketing.userapi.apis.concerts.dto.ConcertDetailDto.ConcertDetailRes;
-import com.concertticketing.userapi.apis.venues.domain.VenueArea;
 import com.concertticketing.userapi.apis.venues.mapper.VenueMapper;
 import com.concertticketing.userapi.common.mapstruct.MapStructBaseConfig;
 import com.concertticketing.userapi.common.mapstruct.TimeMapStructHelper;
@@ -29,9 +29,9 @@ public interface ConcertMapper {
     @Mapping(target = "categories", source = "concert.concertCategories", qualifiedByName = "convertConcertConcertCategoryListToStringList")
     ConcertDetailRes toConcertDetailDto(Concert concert, List<VenueArea> areas);
 
-    ConcertTicketingCache toConcertTicketingCache(ConcertTicketingInfoDBDto concert);
+    ConcertTicketingCache toConcertTicketingCache(ConcertTicketingInfoDto concert);
 
-    ConcertListItemDBDto toConcertListItemDBDto(ConcertListCache concert);
+    ConcertListDto toConcertListDto(ConcertListCache concert);
 
-    List<ConcertListItemDBDto> toConcertListItemDBDtos(List<ConcertListCache> concerts);
+    List<ConcertListDto> toConcertListDtos(List<ConcertListCache> concerts);
 }

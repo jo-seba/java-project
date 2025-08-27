@@ -5,13 +5,13 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.concertticketing.sellerapi.apis.companies.domain.Company;
-import com.concertticketing.sellerapi.apis.concerts.domain.Concert;
+import com.concertticketing.domainrdb.domain.company.domain.Company;
+import com.concertticketing.domainrdb.domain.concert.domain.Concert;
+import com.concertticketing.domainrdb.domain.venue.domain.Venue;
+import com.concertticketing.domainrdb.domain.venue.domain.VenueLayout;
 import com.concertticketing.sellerapi.apis.concerts.dto.AddConcertDto.AddConcertBody;
 import com.concertticketing.sellerapi.apis.concerts.dto.ConcertDetailDto.ConcertDetailRes;
 import com.concertticketing.sellerapi.apis.concerts.dto.ConcertListDto.ConcertListItem;
-import com.concertticketing.sellerapi.apis.venues.domain.Venue;
-import com.concertticketing.sellerapi.apis.venues.domain.VenueLayout;
 import com.concertticketing.sellerapi.common.mapstruct.MapStructBaseConfig;
 
 @Mapper(

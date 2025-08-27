@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.concertticketing.commonavro.ConcertCreatedEvent;
+import com.concertticketing.domainrdb.domain.concert.domain.Concert;
+import com.concertticketing.domainrdb.domain.concert.domain.ConcertConcertCategory;
+import com.concertticketing.domainrdb.domain.concert.domain.ConcertDetailImage;
 import com.concertticketing.sellerapi.apis.companies.service.CompanyService;
-import com.concertticketing.sellerapi.apis.concerts.domain.Concert;
-import com.concertticketing.sellerapi.apis.concerts.domain.ConcertConcertCategory;
-import com.concertticketing.sellerapi.apis.concerts.domain.ConcertDetailImage;
 import com.concertticketing.sellerapi.apis.concerts.dto.AddConcertDto;
 import com.concertticketing.sellerapi.apis.concerts.dto.ConcertDetailDto;
 import com.concertticketing.sellerapi.apis.concerts.dto.ConcertListDto;
@@ -107,13 +107,13 @@ public class ConcertFacade {
     @Transactional(readOnly = true)
     public ConcertDetailDto.ConcertDetailRes getConcert(Long concertId, Integer companyId) {
         return concertMapper.toConcertDetailDto(
-            concertService.findConcertWithVenueAndVenueLayoutAndCategories(concertId, companyId)
+            concertService.findConcert(concertId, companyId)
         );
     }
 
     @Transactional
     public void updateConcert(Long concertId, Integer companyId, UpdateConcertDto.UpdateConcertBody body) {
-        Concert concert = concertService.findConcertWithVenueAndVenueLayoutAndCategories(concertId, companyId);
+        Concert concert = concertService.findConcert(concertId, companyId);
 
         // concert update
         concert.update(

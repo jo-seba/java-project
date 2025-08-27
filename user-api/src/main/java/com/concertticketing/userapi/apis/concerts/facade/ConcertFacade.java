@@ -11,15 +11,15 @@ import org.springframework.util.CollectionUtils;
 
 import com.concertticketing.commonavro.ConcertDetailRequestedEvent;
 import com.concertticketing.commonutils.TimeUtils;
+import com.concertticketing.domainrdb.domain.concert.domain.Concert;
+import com.concertticketing.domainrdb.domain.concert.dto.ConcertListDto;
+import com.concertticketing.domainrdb.domain.venue.domain.VenueArea;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertListCache;
-import com.concertticketing.userapi.apis.concerts.dbdto.ConcertListItemDBDto;
-import com.concertticketing.userapi.apis.concerts.domain.Concert;
 import com.concertticketing.userapi.apis.concerts.dto.ConcertDetailDto;
-import com.concertticketing.userapi.apis.concerts.dto.ConcertListDto;
+import com.concertticketing.userapi.apis.concerts.dto.ConcertsDto;
 import com.concertticketing.userapi.apis.concerts.mapper.ConcertMapper;
 import com.concertticketing.userapi.apis.concerts.service.ConcertCacheService;
 import com.concertticketing.userapi.apis.concerts.service.ConcertService;
-import com.concertticketing.userapi.apis.venues.domain.VenueArea;
 import com.concertticketing.userapi.apis.venues.service.VenueAreaService;
 import com.concertticketing.userapi.common.annotation.Facade;
 import com.concertticketing.userapi.common.kafka.KafkaProducer;
@@ -58,22 +58,22 @@ public class ConcertFacade {
         return concertMapper.toConcertDetailDto(detailConcert, areas);
     }
 
-    public ConcertListDto.ConcertListRes getConcerts(ConcertListDto.ConcertListQuery query) {
+    public ConcertsDto.ConcertListRes getConcerts(ConcertsDto.ConcertListQuery query) {
         List<ConcertListCache> concertCaches = concertCacheService.getConcerts(query.getConcertSort());
         if (!CollectionUtils.isEmpty(concertCaches)) {
-            return new ConcertListDto.ConcertListRes(
+            return new ConcertsDto.ConcertListRes(
                 query.page(),
                 calculateTotalPages(concertService.getConcertCount()),
-                concertMapper.toConcertListItemDBDtos(concertCaches)
+                concertMapper.toConcertListDtos(concertCaches)
             );
         }
 
-        Page<ConcertListItemDBDto> concerts = concertService.findConcerts(
+        Page<ConcertListDto> concerts = concertService.findConcerts(
             query.getConcertSort(),
             PageRequest.of(query.getPageablePage(), LIST_PAGE_SIZE)
         );
 
-        return new ConcertListDto.ConcertListRes(
+        return new ConcertsDto.ConcertListRes(
             query.page(),
             concerts.getTotalPages(),
             concerts.getContent()

@@ -3,8 +3,8 @@ package com.concertticketing.sellerapi.apis.venues.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.concertticketing.sellerapi.apis.venues.domain.Venue;
-import com.concertticketing.sellerapi.apis.venues.repository.VenueRepository;
+import com.concertticketing.domainrdb.domain.venue.domain.Venue;
+import com.concertticketing.domainrdb.domain.venue.repository.VenueRepository;
 
 import lombok.RequiredArgsConstructor;
 

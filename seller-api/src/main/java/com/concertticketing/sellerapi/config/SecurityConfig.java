@@ -18,7 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.concertticketing.sellerapi.apis.sellers.constant.SellerRole;
+import com.concertticketing.domainrdb.domain.seller.enums.SellerRole;
 import com.concertticketing.sellerapi.security.filter.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;

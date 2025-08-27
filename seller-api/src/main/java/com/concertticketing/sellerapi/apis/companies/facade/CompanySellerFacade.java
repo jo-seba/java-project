@@ -6,10 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.concertticketing.commonerror.exception.common.CommonBadRequestException;
+import com.concertticketing.domainrdb.domain.seller.dto.SellerListDto;
+import com.concertticketing.domainrdb.domain.seller.enums.SellerRole;
 import com.concertticketing.sellerapi.apis.companies.dto.AddCompanySellerDto;
-import com.concertticketing.sellerapi.apis.companies.dto.CompanySellerListDto;
+import com.concertticketing.sellerapi.apis.companies.dto.CompanySellersDto;
 import com.concertticketing.sellerapi.apis.companies.dto.UpdateCompanySellerDto;
-import com.concertticketing.sellerapi.apis.sellers.constant.SellerRole;
+import com.concertticketing.sellerapi.apis.companies.service.CompanyService;
 import com.concertticketing.sellerapi.apis.sellers.mapper.SellerMapper;
 import com.concertticketing.sellerapi.apis.sellers.service.SellerService;
 import com.concertticketing.sellerapi.common.annotation.Facade;
@@ -22,23 +24,25 @@ import lombok.RequiredArgsConstructor;
 public class CompanySellerFacade {
     private final SellerMapper sellerMapper;
 
+    private final CompanyService companyService;
+
     private final SellerService sellerService;
 
     public void addCompanySeller(Integer companyId, AddCompanySellerDto.AddCompanySellerBody body) {
-        sellerService.saveSeller(sellerMapper.toSeller(companyId, body));
+        sellerService.saveSeller(sellerMapper.toSeller(companyService.getCompanyReference(companyId), body));
     }
 
-    public CompanySellerListDto.CompanySellerListRes getCompanySellers(
+    public CompanySellersDto.CompanySellerListRes getCompanySellers(
         Integer companyId,
-        CompanySellerListDto.CompanySellerListQuery query
+        CompanySellersDto.CompanySellerListQuery query
     ) {
-        Page<CompanySellerListDto.CompanySellerListItem> sellers = sellerService.findSellers(
+        Page<SellerListDto> sellers = sellerService.findSellers(
             companyId,
             query.sort(),
             PageRequest.of(query.getPageablePage(), DEFAULT_PAGE_SIZE)
         );
 
-        return new CompanySellerListDto.CompanySellerListRes(
+        return new CompanySellersDto.CompanySellerListRes(
             query.page(),
             sellers.getTotalPages(),
             sellers.getContent()

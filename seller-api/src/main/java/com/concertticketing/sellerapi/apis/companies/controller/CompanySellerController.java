@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.concertticketing.sellerapi.apis.companies.dto.AddCompanySellerDto.AddCompanySellerBody;
-import com.concertticketing.sellerapi.apis.companies.dto.CompanySellerListDto.CompanySellerListQuery;
-import com.concertticketing.sellerapi.apis.companies.dto.CompanySellerListDto.CompanySellerListRes;
+import com.concertticketing.sellerapi.apis.companies.dto.CompanySellersDto.CompanySellerListQuery;
+import com.concertticketing.sellerapi.apis.companies.dto.CompanySellersDto.CompanySellerListRes;
 import com.concertticketing.sellerapi.apis.companies.dto.UpdateCompanySellerDto.UpdateCompanySellerBody;
 import com.concertticketing.sellerapi.apis.companies.facade.CompanySellerFacade;
 import com.concertticketing.sellerapi.common.response.SuccessResponse;

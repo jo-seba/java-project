@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.concertticketing.userapi.apis.venues.domain.VenueArea;
-import com.concertticketing.userapi.apis.venues.repository.VenueAreaRepository;
+import com.concertticketing.domainrdb.domain.venue.domain.VenueArea;
+import com.concertticketing.domainrdb.domain.venue.repository.VenueAreaRepository;
 
 import lombok.RequiredArgsConstructor;
 

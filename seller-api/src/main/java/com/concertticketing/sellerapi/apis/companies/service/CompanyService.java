@@ -3,8 +3,8 @@ package com.concertticketing.sellerapi.apis.companies.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.concertticketing.sellerapi.apis.companies.domain.Company;
-import com.concertticketing.sellerapi.apis.companies.repository.CompanyRepository;
+import com.concertticketing.domainrdb.domain.company.domain.Company;
+import com.concertticketing.domainrdb.domain.company.repository.CompanyRepository;
 
 import lombok.RequiredArgsConstructor;
 

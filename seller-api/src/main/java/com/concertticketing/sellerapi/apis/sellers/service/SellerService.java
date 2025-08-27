@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.concertticketing.commonerror.exception.common.CommonConflictException;
 import com.concertticketing.commonerror.exception.common.CommonNotFoundException;
-import com.concertticketing.sellerapi.apis.companies.constant.CompanySellerSort;
-import com.concertticketing.sellerapi.apis.companies.dto.CompanySellerListDto;
-import com.concertticketing.sellerapi.apis.sellers.constant.SellerRole;
-import com.concertticketing.sellerapi.apis.sellers.domain.Seller;
-import com.concertticketing.sellerapi.apis.sellers.repository.SellerRepository;
+import com.concertticketing.domainrdb.domain.seller.domain.Seller;
+import com.concertticketing.domainrdb.domain.seller.dto.SellerListDto;
+import com.concertticketing.domainrdb.domain.seller.enums.SellerRole;
+import com.concertticketing.domainrdb.domain.seller.enums.SellerSort;
+import com.concertticketing.domainrdb.domain.seller.repository.SellerRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,9 +44,9 @@ public class SellerService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CompanySellerListDto.CompanySellerListItem> findSellers(
+    public Page<SellerListDto> findSellers(
         Integer companyId,
-        CompanySellerSort sort,
+        SellerSort sort,
         Pageable pageable
     ) {
         return sellerRepository.findSellersDto(

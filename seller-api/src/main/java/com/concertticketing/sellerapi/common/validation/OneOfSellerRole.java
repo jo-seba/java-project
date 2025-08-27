@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.concertticketing.sellerapi.apis.sellers.constant.SellerRole;
+import com.concertticketing.domainrdb.domain.seller.enums.SellerRole;
 import com.concertticketing.sellerapi.common.validator.OneOfSellerRoleValidator;
 
 import jakarta.validation.Constraint;
