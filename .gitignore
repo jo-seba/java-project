@@ -1,0 +1,12 @@
+# IntelliJ
+.idea/
+
+# Gradle
+.gradle/
+build/
+
+# generated
+**/generated/
+
+# kafka
+kafka/data

@@ -1,0 +1,56 @@
+version: "2.4"
+services:
+  kafka-1:
+    image: confluentinc/cp-kafka:7.5.3
+    container_name: concert-ticketing-kafka-1
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    networks:
+      - concert-ticketing-network
+    volumes:
+      - ./data/kafka-1:/var/lib/kafka/data
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093,EXTERNAL://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:9092,EXTERNAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      CLUSTER_ID: "MkU3OEVBNTcwNTJENDM2Qk"
+  kafka-schema-registry:
+    image: confluentinc/cp-schema-registry:7.5.3
+    container_name: concert-ticketing-kafka-schema
+    ports:
+      - "8083:8083"
+    networks:
+      - concert-ticketing-network
+    depends_on:
+      - kafka-1
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka-1:9092
+      SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8083
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: concert-ticketing-kafka-ui
+    ports:
+      - "8082:8080"
+    networks:
+      - concert-ticketing-network
+    depends_on:
+      - kafka-1
+      - kafka-schema-registry
+    environment:
+      DYNAMIC_CONFIG_ENABLED: "true"
+      KAFKA_CLUSTERS_0_NAME: concert-ticketing-kafka
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-1:9092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://kafka-schema-registry:8083
+networks:
+  concert-ticketing-network:

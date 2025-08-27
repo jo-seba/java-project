@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+jwt:
+  access_token_secret_key: ${ACCESS_TOKEN_SECRET_KEY}
+  refresh_token_secret_key: ${REFRESH_TOKEN_SECRET_KEY}
+  access_token_expire: ${ACCESS_TOKEN_EXPIRE}
+  refresh_token_expire: ${REFRESH_TOKEN_EXPIRE}
+
+logging.level:
+  org.hibernate.SQL: info
+  org.hibernate.orm.jdbc.bind: info
+
+springdoc:
+  cache:
+    disabled: false

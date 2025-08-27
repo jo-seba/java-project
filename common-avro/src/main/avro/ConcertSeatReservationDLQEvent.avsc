@@ -1,0 +1,23 @@
+{
+  "name": "ConcertSeatReservationDLQEvent",
+  "namespace": "com.concertticketing.commonavro",
+  "type": "record",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string"
+    },
+    {
+      "name": "concertId",
+      "type": "long"
+    },
+    {
+      "name": "userId",
+      "type": "long"
+    },
+    {
+      "name": "scheduleId",
+      "type": "long"
+    }
+  ]
+}

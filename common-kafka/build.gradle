@@ -1,0 +1,13 @@
+plugins {
+    id 'java-library'
+}
+
+group = 'com.concertticketing'
+version = 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}

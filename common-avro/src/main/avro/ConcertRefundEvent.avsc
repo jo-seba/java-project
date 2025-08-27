@@ -1,0 +1,35 @@
+{
+  "name": "ConcertRefundEvent",
+  "namespace": "com.concertticketing.commonavro",
+  "type": "record",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string"
+    },
+    {
+      "name": "concertId",
+      "type": "long"
+    },
+    {
+      "name": "userId",
+      "type": "long"
+    },
+    {
+      "name": "scheduleId",
+      "type": "long"
+    },
+    {
+      "name": "paymentId",
+      "type": "long"
+    },
+    {
+      "name": "retryCount",
+      "type": "int"
+    },
+    {
+      "name": "maxRetryCount",
+      "type": "int"
+    }
+  ]
+}
