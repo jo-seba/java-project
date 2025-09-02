@@ -46,14 +46,16 @@ public class ConcertFacade {
         Concert detailConcert = concertService.findConcert(concertId);
         List<VenueArea> areas = venueAreaService.findAreas(detailConcert.getVenueLayout().getId());
 
-        kafkaProducer.send(
-            CONCERT_DETAIL_REQUESTED_EVENT,
-            new ConcertDetailRequestedEvent(
-                concertId,
-                userId,
-                TimeUtils.epochSeconds()
-            )
-        );
+        if (userId != null) {
+            kafkaProducer.send(
+                CONCERT_DETAIL_REQUESTED_EVENT,
+                new ConcertDetailRequestedEvent(
+                    concertId,
+                    userId,
+                    TimeUtils.epochSeconds()
+                )
+            );
+        }
 
         return concertMapper.toConcertDetailDto(detailConcert, areas);
     }

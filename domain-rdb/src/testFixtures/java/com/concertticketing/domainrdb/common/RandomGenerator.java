@@ -27,6 +27,10 @@ public final class RandomGenerator {
         return RANDOM.nextInt(1000) + 1;
     }
 
+    public static Long randomPositiveNumLong() {
+        return RANDOM.nextLong(1000) + 1;
+    }
+
     public static Integer randomPositiveNum(int max) {
         return RANDOM.nextInt(max) + 1;
     }

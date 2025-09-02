@@ -27,4 +27,8 @@ public class Venue {
     private String roadAddress;
     private BigDecimal latitude;
     private BigDecimal longitude;
+
+    public Venue(String name) {
+        this.name = name;
+    }
 }
