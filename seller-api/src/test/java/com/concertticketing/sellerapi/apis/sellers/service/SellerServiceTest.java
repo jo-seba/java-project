@@ -39,7 +39,7 @@ class SellerServiceTest {
     @Mock
     private SellerRepository sellerRepository;
 
-    public final int DEFAULT_PAGE_SIZE = 10;
+    private final int DEFAULT_PAGE_SIZE = 10;
 
     @DisplayName("saveSeller")
     @Nested
@@ -165,9 +165,11 @@ class SellerServiceTest {
                 given(sellerRepository.findSellersDto(companyId, sort, pageable))
                     .willReturn(page);
 
-                assertThat(sellerService.findSellers(companyId, sort, pageable).getSize())
+                Page<SellerListDto> result = sellerService.findSellers(companyId, sort, pageable);
+
+                assertThat(result.getSize())
                     .isEqualTo(DEFAULT_PAGE_SIZE);
-                assertThat(sellerService.findSellers(companyId, sort, pageable).getContent().size())
+                assertThat(result.getContent().size())
                     .isEqualTo(items.size());
             }
 
@@ -186,7 +188,9 @@ class SellerServiceTest {
                 given(sellerRepository.findSellersDto(companyId, sort, pageable))
                     .willReturn(sellers);
 
-                assertThat(sellerService.findSellers(companyId, sort, pageable).getContent().size())
+                Page<SellerListDto> result = sellerService.findSellers(companyId, sort, pageable);
+
+                assertThat(result.getContent().size())
                     .isEqualTo(0);
             }
         }
