@@ -58,6 +58,7 @@ public class Seller extends DateAuditable {
         validate(company, email, role, name, phoneNumber);
 
         this.company = company;
+        this.companyId = company.getId();
         this.email = email;
         this.role = role;
         this.name = name;

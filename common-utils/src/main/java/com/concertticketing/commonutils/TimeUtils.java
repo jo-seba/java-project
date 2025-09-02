@@ -28,6 +28,10 @@ public final class TimeUtils {
         return Instant.ofEpochSecond(epochSeconds).atZone(DEFAULT_ZONE).toLocalDateTime();
     }
 
+    public static LocalDateTime toLocalDateTime(String dateTime) {
+        return Instant.parse(dateTime).atZone(DEFAULT_ZONE).toLocalDateTime();
+    }
+
     public static LocalDateTime now() {
         return LocalDateTime.now(DEFAULT_ZONE);
     }

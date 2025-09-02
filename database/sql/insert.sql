@@ -7,7 +7,7 @@ VALUES (1, "회사1"),
 INSERT INTO `seller` (`id`, `email`, `company_id`, `role`, `name`, `phone_number`)
 VALUES (1, "onetefst@testa.comadsfadf", 1, 21, "아이야", "00011112222"),
        (2, "onetest1234@testa.comadsfadf", 1, 11, "홍길동", "11012341234"),
-       (3, "twotabcd@testb.comasdfadsf", 2, 1, "아아호", "11043214321"),
+       (3, "twotabcd@testb.comasdfadsf", 1, 1, "아아호", "11043214321"),
        (4, "threehiehi@testc.comasdfasdf", 3, 1, "사람임", "13212452352");
 
 

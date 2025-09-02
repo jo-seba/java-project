@@ -1,8 +1,11 @@
 spring:
   application:
-    name: seller-api
+    name: test-seller-api
 
   datasource:
+    url: jdbc:mysql://localhost:3306/test_db?rewriteBatchedStatements=true&profileSQL=true&logger=Slf4JLogger&maxQuerySizeToLog=999999
+    username: test_user
+    password: test_password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -21,7 +24,7 @@ spring:
           batch_size: 100
 
   kafka:
-    bootstrap-servers: ${KAFKA_URL:localhost:29092}
+    bootstrap-servers: localhost:29092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
@@ -31,8 +34,18 @@ spring:
     properties:
       value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
       linger.ms: 0
-      schema.registry.url: ${KAFKA_SCHEMA_REGISTRY_URL:http://localhost:8083}
+      schema.registry.url: http://localhost:8083
 
 springdoc:
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
+
+jwt:
+  access_token_secret_key: asdf1234ASDF!@@#$asdf1234ASDF!@#$
+  refresh_token_secret_key: 1234asdfASDF!@#$1234asdfAS1234asd
+  access_token_expire: 3600000
+  refresh_token_expire: 2592000000
+
+logging.level:
+  org.hibernate.SQL: info
+  org.hibernate.orm.jdbc.bind: info

@@ -1,6 +1,7 @@
 package com.concertticketing.sellerapi.apis.companies.dto;
 
 import com.concertticketing.domainrdb.domain.seller.enums.SellerRole;
+import com.concertticketing.sellerapi.common.validation.OneOfSellerRole;
 import com.concertticketing.sellerapi.common.validation.PhoneNumber;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,6 +13,7 @@ public final class UpdateCompanySellerDto {
     public record UpdateCompanySellerBody(
         @Schema(description = "본인 아닌 경우만 역할 설정 가능하며, MEMBER or MANAGER 만 가능")
         @NotNull
+        @OneOfSellerRole(anyOf = {SellerRole.MEMBER, SellerRole.MANAGER})
         SellerRole role,
         @NotBlank
         @Size(max = 24)

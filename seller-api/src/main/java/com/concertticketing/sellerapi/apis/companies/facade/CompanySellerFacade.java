@@ -1,7 +1,5 @@
 package com.concertticketing.sellerapi.apis.companies.facade;
 
-import static com.concertticketing.sellerapi.common.constant.PageConstants.*;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -27,6 +25,8 @@ public class CompanySellerFacade {
     private final CompanyService companyService;
 
     private final SellerService sellerService;
+
+    public final int DEFAULT_PAGE_SIZE = 10;
 
     public void addCompanySeller(Integer companyId, AddCompanySellerDto.AddCompanySellerBody body) {
         sellerService.saveSeller(sellerMapper.toSeller(companyService.getCompanyReference(companyId), body));
