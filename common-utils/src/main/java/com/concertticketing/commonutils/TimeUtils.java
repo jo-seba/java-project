@@ -29,7 +29,7 @@ public final class TimeUtils {
     }
 
     public static LocalDateTime toLocalDateTime(String dateTime) {
-        return Instant.parse(dateTime).atZone(DEFAULT_ZONE).toLocalDateTime();
+        return LocalDateTime.parse(dateTime);
     }
 
     public static LocalDateTime now() {

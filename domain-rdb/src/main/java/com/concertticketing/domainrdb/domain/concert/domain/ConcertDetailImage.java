@@ -21,4 +21,8 @@ public class ConcertDetailImage {
     private Long id;
 
     private String imageUrl;
+
+    public ConcertDetailImage(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

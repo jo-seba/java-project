@@ -28,7 +28,17 @@ public class Venue {
     private BigDecimal latitude;
     private BigDecimal longitude;
 
-    public Venue(String name) {
+    public Venue(
+        String name,
+        Integer capacity,
+        String roadAddress,
+        BigDecimal latitude,
+        BigDecimal longitude
+    ) {
         this.name = name;
+        this.capacity = capacity;
+        this.roadAddress = roadAddress;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }

@@ -4,8 +4,11 @@ import static com.concertticketing.domainrdb.common.RandomGenerator.*;
 import static com.concertticketing.domainrdb.common.ReflectionField.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.concertticketing.domainrdb.domain.concert.domain.Concert;
+import com.concertticketing.domainrdb.domain.concert.domain.ConcertConcertCategory;
+import com.concertticketing.domainrdb.domain.concert.domain.ConcertDetailImage;
 import com.concertticketing.domainrdb.domain.concert.dto.ConcertListDto;
 
 import lombok.Builder;
@@ -49,6 +52,19 @@ public class ConcertFixture {
         );
 
         setField(concert, "id", id != null ? id : randomPositiveNumLong());
+
+        List<ConcertConcertCategory> concertConcertCategories = List.of(
+            new ConcertConcertCategory(concert, ConcertCategoryFixture.builder().build()),
+            new ConcertConcertCategory(concert, ConcertCategoryFixture.builder().build())
+        );
+        setField(concert, "concertCategories", concertConcertCategories);
+
+        List<ConcertDetailImage> concertDetailImages = List.of(
+            ConcertDetailImageFixture.builder().build(),
+            ConcertDetailImageFixture.builder().build(),
+            ConcertDetailImageFixture.builder().build()
+        );
+        setField(concert, "detailImages", concertDetailImages);
 
         return concert;
     }

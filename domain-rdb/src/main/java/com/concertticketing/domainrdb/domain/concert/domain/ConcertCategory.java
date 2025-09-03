@@ -21,5 +21,9 @@ public class ConcertCategory {
     private Integer id;
 
     private String name;
+
+    public ConcertCategory(String name) {
+        this.name = name;
+    }
 }
 

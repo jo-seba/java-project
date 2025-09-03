@@ -16,7 +16,11 @@ public class VenueFixture {
         Integer id
     ) {
         Venue venue = new Venue(
-            randomText("venue")
+            randomText("venue"),
+            randomPositiveNum(100, 10000),
+            randomText("roadAddress"),
+            randomLatitude(),
+            randomLongitude()
         );
 
         setField(venue, "id", id != null ? id : randomPositiveNum());
