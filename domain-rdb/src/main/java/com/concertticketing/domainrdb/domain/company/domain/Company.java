@@ -26,4 +26,8 @@ public class Company extends DateAuditable {
     private Integer id;
 
     private String name;
+
+    public Company(String name) {
+        this.name = name;
+    }
 }

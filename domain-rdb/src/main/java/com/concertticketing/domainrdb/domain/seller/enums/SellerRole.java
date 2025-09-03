@@ -49,4 +49,8 @@ public enum SellerRole {
     public String getSecurityRoleName() {
         return "ROLE_" + name();
     }
+
+    public boolean isMemberOrManager() {
+        return this == MEMBER || this == MANAGER;
+    }
 }

@@ -10,8 +10,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class ConcertDetailDto {
     @Schema(description = "콘서트 조회 응답")
     public record ConcertDetailRes(
-        @Schema(description = "사용자 ID", example = "1")
-        int id,
+        @Schema(description = "콘서트 ID", example = "1")
+        Long id,
         @Schema(description = "콘서트 이름")
         String title,
         @Schema(description = "콘서트 설명")

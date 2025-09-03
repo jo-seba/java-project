@@ -26,5 +26,11 @@ public class VenueArea {
 
     private String name;
     private BigDecimal price;
+
+    public VenueArea(
+        Long layoutId
+    ) {
+        this.layoutId = layoutId;
+    }
 }
 

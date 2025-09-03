@@ -3,12 +3,14 @@ package com.concertticketing.sellerapi.config;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
 @Configuration
 public class JacksonConfig {
     @Bean
+    @Profile("!test") // test: snake case error
     public Jackson2ObjectMapperBuilderCustomizer jacksonCustomizer() {
         return builder -> builder.propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
     }

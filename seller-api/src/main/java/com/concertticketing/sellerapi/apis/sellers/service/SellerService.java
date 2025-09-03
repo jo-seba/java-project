@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.concertticketing.commonerror.exception.common.CommonBadRequestException;
 import com.concertticketing.commonerror.exception.common.CommonConflictException;
 import com.concertticketing.commonerror.exception.common.CommonNotFoundException;
 import com.concertticketing.domainrdb.domain.seller.domain.Seller;
@@ -30,6 +31,9 @@ public class SellerService {
      */
     @Transactional
     public Seller saveSeller(Seller seller) {
+        if (!seller.getRole().isMemberOrManager()) {
+            throw new CommonBadRequestException();
+        }
         try {
             return sellerRepository.save(seller);
         } catch (DataIntegrityViolationException e) {
@@ -59,6 +63,9 @@ public class SellerService {
     // Update
     @Transactional
     public int updateSeller(Integer id, Integer companyId, SellerRole role, String name, String phoneNumber) {
+        if (!role.isMemberOrManager()) {
+            throw new CommonBadRequestException();
+        }
         return sellerRepository.updateSeller(id, companyId, role, name, phoneNumber);
     }
 

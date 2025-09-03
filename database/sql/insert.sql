@@ -7,7 +7,7 @@ VALUES (1, "회사1"),
 INSERT INTO `seller` (`id`, `email`, `company_id`, `role`, `name`, `phone_number`)
 VALUES (1, "onetefst@testa.comadsfadf", 1, 21, "아이야", "00011112222"),
        (2, "onetest1234@testa.comadsfadf", 1, 11, "홍길동", "11012341234"),
-       (3, "twotabcd@testb.comasdfadsf", 2, 1, "아아호", "11043214321"),
+       (3, "twotabcd@testb.comasdfadsf", 1, 1, "아아호", "11043214321"),
        (4, "threehiehi@testc.comasdfasdf", 3, 1, "사람임", "13212452352");
 
 
@@ -94,8 +94,8 @@ VALUES (1, 1, 1, '아이유 전국투어 - 서울', 200, '2026-06-01 18:00:00', 
         '2025-08-15 11:00:00', '2025-09-15 00:00:00', true, false, NOW(), NOW(), 'leehi_gj.jpg', '이하이와 함께하는 가을 밤'),
        (3, 1, 3, 'ZICO - 서울 단독공연', 200, '2025-09-20 18:00:00', '2025-09-20 20:30:00',
         '2025-08-20 10:00:00', '2025-09-20 00:00:00', true, false, NOW(), NOW(), 'zico_seoul.jpg', '강렬한 무대, ZICO의 귀환'),
-       (2, 2, 4, '라포엠 부산 리사이틀', 300, '2025-09-25 18:00:00', '2025-09-25 20:00:00',
-        '2025-08-25 12:00:00', '2025-09-25 00:00:00', true, false, NOW(), NOW(), 'lapoem_busan.jpg', '클래식과 대중의 경계에서');
+       (2, 2, 4, '라포엠 부산 리사이틀', 300, '2035-09-25 18:00:00', '2035-09-25 20:00:00',
+        '2035-08-25 12:00:00', '2035-09-25 00:00:00', true, false, NOW(), NOW(), 'lapoem_busan.jpg', '클래식과 대중의 경계에서');
 
 INSERT INTO `concert_ticketing_config` (`id`, `capacity`, `started_at`, `ended_at`)
 VALUES (1, 100, '2025-05-01 10:00:00', '2026-06-01 00:00:00');

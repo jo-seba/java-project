@@ -19,4 +19,8 @@ public class VenueLayout {
     private Long id;
 
     String name;
+
+    public VenueLayout(String name) {
+        this.name = name;
+    }
 }

@@ -37,8 +37,7 @@ public class ConcertController {
 
     @Operation(summary = "콘서트 리스트 조회")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = ConcertListRes.class))),
-        @ApiResponse(responseCode = "404", description = "page overflow")
+        @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = ConcertListRes.class)))
     })
     @GetMapping
     public ResponseEntity<ConcertListRes> getConcerts(

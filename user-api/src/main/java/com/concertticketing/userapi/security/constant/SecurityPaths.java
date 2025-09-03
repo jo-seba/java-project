@@ -10,4 +10,8 @@ public final class SecurityPaths {
         "/api/v1/concerts/*/seats/**"
     };
     public static final String AUTH_PATH = "/api/v1/auth/**";
+    public static final String[] CONCERT_PATHS = {
+        "/api/v1/concerts",
+        "/api/v1/concerts/*"
+    };
 }
