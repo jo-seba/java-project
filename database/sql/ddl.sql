@@ -95,9 +95,9 @@ DROP TABLE IF EXISTS venue_row;
 CREATE TABLE `venue_row` (
     `id`	        bigint	    NOT NULL    auto_increment  PRIMARY KEY,
     `area_id`    	bigint	    NOT NULL,
-    `name`	        varchar(2)	NULL,
-    `start_column`	smallint	NULL,
-    `end_column`	smallint	NULL,
+    `name`	        varchar(2)	NOT NULL,
+    `start_column`	smallint	NOT NULL,
+    `end_column`	smallint	NOT NULL,
     FOREIGN KEY (area_id) REFERENCES venue_area(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -199,7 +199,7 @@ CREATE TABLE `concert_order` (
     `schedule_id`	bigint	        NOT NULL,
     `seat_id`	    bigint	        NOT NULL,
     `price`	        decimal(9, 0)   NULL,
-    `created_at`	timestamp	    NULL,
+    `created_at`	timestamp	    NOT NULL    DEFAULT CURRENT_TIMESTAMP,
     `updated_at`    timestamp	    NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (concert_id) REFERENCES concert(id) ON DELETE CASCADE ON UPDATE CASCADE,
