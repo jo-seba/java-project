@@ -5,9 +5,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.concertticketing.kafkaconsumer.common.constant.SeatStatus;
-import com.concertticketing.kafkaconsumer.domain.concert.domain.ConcertSeat;
-import com.concertticketing.kafkaconsumer.domain.concert.repository.ConcertSeatRepository;
+import com.concertticketing.domainrdb.domain.concert.domain.ConcertSeat;
+import com.concertticketing.domainrdb.domain.concert.enums.SeatStatus;
+import com.concertticketing.domainrdb.domain.concert.repository.ConcertSeatRepository;
 
 import lombok.RequiredArgsConstructor;
 

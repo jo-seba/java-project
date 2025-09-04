@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 import com.concertticketing.commonavro.ConcertSeatReservationRequestedEvent;
 import com.concertticketing.commonerror.exception.common.CommonInternalServerException;
 import com.concertticketing.commonerror.exception.common.CommonNotFoundException;
+import com.concertticketing.domainrdb.domain.concert.domain.ConcertSeat;
+import com.concertticketing.domainrdb.domain.concert.enums.SeatStatus;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertSeatReservationCache;
-import com.concertticketing.kafkaconsumer.common.constant.SeatStatus;
 import com.concertticketing.kafkaconsumer.common.handler.manual.ConsumerManualHandler;
-import com.concertticketing.kafkaconsumer.domain.concert.domain.ConcertSeat;
 import com.concertticketing.kafkaconsumer.domain.concert.service.ConcertCacheService;
 import com.concertticketing.kafkaconsumer.domain.concert.service.ConcertSeatService;
 

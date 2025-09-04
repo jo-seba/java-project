@@ -33,4 +33,12 @@ public class ConcertSeat {
     private SeatStatus status;
     private Long holdUserId;
     private LocalDateTime holdExpiredAt;
+
+    public boolean isOngoing() {
+        return status == SeatStatus.ONGOING;
+    }
+
+    public boolean isSold() {
+        return status == SeatStatus.SOLD;
+    }
 }

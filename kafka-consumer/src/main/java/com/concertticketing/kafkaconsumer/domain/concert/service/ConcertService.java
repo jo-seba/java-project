@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.concertticketing.kafkaconsumer.common.constant.ConcertSort;
-import com.concertticketing.kafkaconsumer.domain.concert.dto.ConcertListItemDBDto;
-import com.concertticketing.kafkaconsumer.domain.concert.repository.ConcertJdbcRepository;
-import com.concertticketing.kafkaconsumer.domain.concert.repository.ConcertRepository;
+import com.concertticketing.domainrdb.domain.concert.dto.ConcertListDto;
+import com.concertticketing.domainrdb.domain.concert.enums.ConcertSort;
+import com.concertticketing.domainrdb.domain.concert.repository.ConcertJdbcRepository;
+import com.concertticketing.domainrdb.domain.concert.repository.ConcertRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +22,7 @@ public class ConcertService {
 
     private final ConcertJdbcRepository concertJdbcRepository;
 
-    public Page<ConcertListItemDBDto> findConcerts(ConcertSort sort, Pageable pageable) {
+    public Page<ConcertListDto> findConcerts(ConcertSort sort, Pageable pageable) {
         return concertRepository.findConcerts(sort, pageable);
     }
 

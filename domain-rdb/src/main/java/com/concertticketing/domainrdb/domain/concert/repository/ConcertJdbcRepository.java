@@ -1,4 +1,4 @@
-package com.concertticketing.kafkaconsumer.domain.concert.repository;
+package com.concertticketing.domainrdb.domain.concert.repository;
 
 import java.util.Map;
 
