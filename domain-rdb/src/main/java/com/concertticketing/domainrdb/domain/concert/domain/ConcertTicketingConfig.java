@@ -1,5 +1,7 @@
 package com.concertticketing.domainrdb.domain.concert.domain;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,4 +21,6 @@ public class ConcertTicketingConfig {
     Long id;
 
     Integer capacity;
+    private LocalDateTime startedAt;
+    private LocalDateTime endedAt;
 }

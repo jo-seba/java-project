@@ -1,5 +1,7 @@
 package com.concertticketing.domainrdb.domain.concert.repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -43,4 +45,13 @@ public interface ConcertRepository extends JpaRepository<Concert, Long>, Concert
         Long id,
         Integer companyId
     );
+
+    /**
+     * date 기준으로 예약 가능한 콘서트 추출
+     * @param nextDay 당일 + 1
+     * @param today 당일
+     */
+    @Query("SELECT c FROM Concert c "
+        + "WHERE c.bookingStartedAt < :nextDay AND c.bookingEndedAt >= :today")
+    List<Concert> findBookableConcerts(LocalDateTime today, LocalDateTime nextDay);
 }

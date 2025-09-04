@@ -6,13 +6,14 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.concertticketing.schedulercore.domain.concert.domain.ConcertTicketingConfig;
-import com.concertticketing.schedulercore.domain.concert.repository.ConcertTicketingConfigRepository;
+import com.concertticketing.domainrdb.domain.concert.domain.ConcertTicketingConfig;
+import com.concertticketing.domainrdb.domain.concert.repository.ConcertTicketingConfigRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ConcertTicketingConfigService {
     private final ConcertTicketingConfigRepository concertTicketingConfigRepository;
 
