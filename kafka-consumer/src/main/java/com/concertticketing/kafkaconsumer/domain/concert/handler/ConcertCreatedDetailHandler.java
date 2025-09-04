@@ -10,9 +10,9 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import com.concertticketing.commonavro.ConcertCreatedEvent;
-import com.concertticketing.kafkaconsumer.common.constant.ConcertSort;
+import com.concertticketing.domainrdb.domain.concert.dto.ConcertListDto;
+import com.concertticketing.domainrdb.domain.concert.enums.ConcertSort;
 import com.concertticketing.kafkaconsumer.common.handler.auto.ConsumerAutoHandler;
-import com.concertticketing.kafkaconsumer.domain.concert.dto.ConcertListItemDBDto;
 import com.concertticketing.kafkaconsumer.domain.concert.mapper.ConcertMapper;
 import com.concertticketing.kafkaconsumer.domain.concert.service.ConcertCacheService;
 import com.concertticketing.kafkaconsumer.domain.concert.service.ConcertService;
@@ -46,7 +46,7 @@ public class ConcertCreatedDetailHandler
     @Override
     public void handler(ConcertCreatedEvent event) {
         for (ConcertSort sort : ConcertSort.values()) {
-            Page<ConcertListItemDBDto> concerts = concertService.findConcerts(
+            Page<ConcertListDto> concerts = concertService.findConcerts(
                 sort,
                 PageRequest.of(0, LIST_PAGE_SIZE)
             );

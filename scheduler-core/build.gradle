@@ -27,6 +27,7 @@ repositories {
 }
 
 dependencies {
+    implementation project(':domain-rdb')
     implementation project(':domain-redis')
     implementation project(':common-error')
     implementation project(':common-utils')
@@ -35,23 +36,14 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
 
     implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     // caffeine
     implementation 'com.github.ben-manes.caffeine:caffeine'
 
-    // querydsl
-    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
-    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
-
     // mapstruct
     implementation 'org.mapstruct:mapstruct:1.6.3'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
-
-    runtimeOnly 'com.mysql:mysql-connector-j'
 
     testAnnotationProcessor "org.projectlombok:lombok"
     testCompileOnly "org.projectlombok:lombok"

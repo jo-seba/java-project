@@ -39,7 +39,7 @@ public class ConcertScheduler {
 
     private final int WAITING_TO_ACTIVE_COUNT = 128;
 
-    @Scheduled(cron = "00 50 23 * * *")
+    @Scheduled(cron = "00 50 23 * * *", zone = "Asia/Seoul")
     public void putNextBookableConcertToLocalCache() {
         LocalDate targetDate = LocalDate.now().plusDays(1);
         concertLocalCacheService.putBookableConcerts(
@@ -48,7 +48,7 @@ public class ConcertScheduler {
         );
     }
 
-    @Scheduled(cron = "00 51 23 * * *")
+    @Scheduled(cron = "00 51 23 * * *", zone = "Asia/Seoul")
     public void putNextExclusiveConcertToLocalCache() {
         LocalDate targetDate = LocalDate.now().plusDays(1);
         concertLocalCacheService.putExclusiveConcert(
@@ -61,7 +61,7 @@ public class ConcertScheduler {
         );
     }
 
-    @Scheduled(fixedDelay = 5000, zone = "Asia/Seoul")
+    @Scheduled(fixedDelay = 5000)
     public void expireTokens() {
         log.info("expire tokens");
         LocalDateTime now = LocalDateTime.now();
@@ -76,7 +76,7 @@ public class ConcertScheduler {
         }
     }
 
-    @Scheduled(initialDelay = 3000, fixedDelay = 10000, zone = "Asia/Seoul")
+    @Scheduled(initialDelay = 3000, fixedDelay = 10000)
     public void expireExclusiveTokens() {
         log.info("expire exclusive tokens");
         LocalDateTime now = LocalDateTime.now();

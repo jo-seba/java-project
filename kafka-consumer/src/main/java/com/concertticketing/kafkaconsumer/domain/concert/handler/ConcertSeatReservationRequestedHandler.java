@@ -14,12 +14,12 @@ import com.concertticketing.commonerror.exception.common.CommonBadRequestExcepti
 import com.concertticketing.commonerror.exception.common.CommonConflictException;
 import com.concertticketing.commonerror.exception.common.CommonInternalServerException;
 import com.concertticketing.commonerror.exception.common.CommonNotFoundException;
+import com.concertticketing.domainrdb.domain.concert.domain.ConcertSeat;
+import com.concertticketing.domainrdb.domain.concert.enums.SeatStatus;
 import com.concertticketing.domainredis.common.constant.ConcertPaymentEventStatus;
 import com.concertticketing.domainredis.domain.concert.domain.ConcertSeatReservationCache;
-import com.concertticketing.kafkaconsumer.common.constant.SeatStatus;
 import com.concertticketing.kafkaconsumer.common.handler.manual.ConsumerRetryAndDLQManualHandler;
 import com.concertticketing.kafkaconsumer.common.kafka.KafkaProducer;
-import com.concertticketing.kafkaconsumer.domain.concert.domain.ConcertSeat;
 import com.concertticketing.kafkaconsumer.domain.concert.service.ConcertCacheService;
 import com.concertticketing.kafkaconsumer.domain.concert.service.ConcertPaymentService;
 import com.concertticketing.kafkaconsumer.domain.concert.service.ConcertSeatService;
