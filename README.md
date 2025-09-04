@@ -2,8 +2,7 @@
 
 Kafka 기반 EDA와 Redis 캐싱을 활용한 티켓팅 시스템
 
-<details>
-<summary><b>Tech Stack</b></summary>
+## Tech Stack
 
 Backend: Java 17, Spring Boot 3.5, Spring Security, Spring Data JPA, QueryDSL, Spring Data Redis, Caffeine, MapStruct,
 Scheduler
@@ -16,12 +15,7 @@ Infra: Docker, Docker-compose
 
 Test: JUnit5, TestRestTemplate
 
-</details>
-
-<br/>
-
-<details>
-<summary><b>Project Structure</b></summary>
+## Project Structure
 
 ### Multi Module
 
@@ -46,21 +40,11 @@ Test: JUnit5, TestRestTemplate
 | database    | mysql, mongodb 및 redis [docker-compose.yml](./database/docker-compose.yml) / DDL, DML, config |
 | kafka       | kafka, schema-registry 및 kafka-ui [docker-compose.yml](./kafka/docker-compose.yml)            |
 
-</details>
-
-<br/>
-
-<details>
-<summary><b>ERD</b></summary>
+## ERD
 
 ![erd](images/erd/cc-erd.png)
 
-</details>
-
-<br/>
-
-<details>
-<summary><b>Sequence Diagram</b></summary>
+## Sequence Diagram
 
 ### 콘서트 대기열
 
@@ -150,12 +134,7 @@ sequenceDiagram
     end
 ```
 
-</details>
-
-<br/>
-
-<details>
-<summary><b>Core Feature</b></summary>
+## Core Feature
 
 ### 1. 티켓팅 대기열 구현
 
@@ -329,5 +308,3 @@ TestRestTemplate을 사용해 API 요청을 보낼 때, 요청/응답 로직과 
 예를 들어, 매 테스트마다 다른 유저가 필요해 유저를 생성하고 해당 유저 JWT를 헤더에 넣어야 하는 경우, Test Client에 메서드를 추가해 쉽게 처리할 수 있습니다.
 
 Test Fixture와 공통 Test Client를 활용함으로써 테스트 코드의 중복을 줄이고 재사용성, 가독성과 유지보수성을 크게 향상시킬 수 있었습니다.
-
-</details>
